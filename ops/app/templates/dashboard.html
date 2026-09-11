@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div><h1>Dashboard</h1><p class="sub">What is expired, overdue, open or unfinished — as of {{ d.today }}.</p></div>
+</div>
+
+<div class="stats">
+  <div class="stat {{ 'bad' if d.expired else 'ok' }}"><b>{{ d.expired|length }}</b><span>expired documents</span></div>
+  <div class="stat {{ 'warn' if d.d30 else '' }}"><b>{{ d.d30|length }}</b><span>expiring ≤ 30 days</span></div>
+  <div class="stat"><b>{{ d.d60|length }} / {{ d.d90|length }}</b><span>expiring ≤ 60 / ≤ 90 days</span></div>
+  <div class="stat {{ 'bad' if d.overdue else 'ok' }}"><b>{{ d.overdue|length }}</b><span>overdue obligations</span></div>
+  <div class="stat {{ 'warn' if d.soon else '' }}"><b>{{ d.soon|length }}</b><span>obligations due ≤ 30 days</span></div>
+  <div class="stat {{ 'warn' if d.open_complaints else 'ok' }}"><b>{{ d.open_complaints|length }}</b><span>open complaints</span></div>
+  <div class="stat {{ 'bad' if d.patterns else 'ok' }}"><b>{{ d.patterns|length }}</b><span>batches with ≥3 complaints</span></div>
+  <div class="stat {{ 'warn' if d.batch_issues else 'ok' }}"><b>{{ d.batch_issues|length }}</b><span>batches with QC gaps</span></div>
+</div>
+
+<div class="quick">
+  <a class="btn sm" href="{{ root }}/documents/new">+ Document</a>
+  <a class="btn sm" href="{{ root }}/batches/new">+ Batch</a>
+  <a class="btn sm" href="{{ root }}/complaints/new">+ Complaint</a>
+  <a class="btn sm" href="{{ root }}/tasks/new">+ Task</a>
+  <a class="btn sm ghost" href="{{ root }}/sops">SOPs ({{ d.sops }})</a>
+  <a class="btn sm ghost" href="{{ root }}/vault">Vault</a>
+</div>
+
+{% for p in d.patterns %}
+<div class="alert"><b>Pattern:</b> batch <a href="{{ root }}/complaints?q={{ p.batch_no }}">{{ p.batch_no }}</a> has {{ p.n }} complaints ({{ p.issues }}). Three on one batch is a supplier conversation, not bad luck — see SOP-05.</div>
+{% endfor %}
+
+<div class="grid">
+  <div class="card">
+    <h2 style="margin-top:0">Documents — expired</h2>
+    {% if d.expired %}<table><thead><tr><th>Document</th><th>Number</th><th>Expired</th></tr></thead><tbody>
+    {% for x in d.expired %}<tr><td><a href="{{ root }}/documents/{{ x.id }}">{{ x.title }}</a></td><td class="num">{{ x.number or '' }}</td><td class="num">{{ x.expiry_date or '—' }}</td></tr>{% endfor %}
+    </tbody></table>{% else %}<p class="muted">Nothing expired.</p>{% endif %}
+    <h3>Expiring within 90 days</h3>
+    {% set soon = d.d30 + d.d60 + d.d90 %}
+    {% if soon %}<table><tbody>{% for x in soon %}<tr><td><a href="{{ root }}/documents/{{ x.id }}">{{ x.title }}</a></td><td class="num">{{ x.expiry_date }}</td><td class="num">{{ x.days_left }} d</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">Nothing expiring in the next 90 days.</p>{% endif %}
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Compliance — overdue</h2>
+    {% if d.overdue %}<table><thead><tr><th>Obligation</th><th>Was due</th><th>Owner</th></tr></thead><tbody>
+    {% for x in d.overdue %}<tr><td><a href="{{ root }}/compliance/{{ x.id }}">{{ x.name }}</a></td><td class="num"><span class="pill overdue">{{ x.next_due }}</span></td><td>{{ x.owner }}</td></tr>{% endfor %}
+    </tbody></table>{% else %}<p class="muted">Nothing overdue.</p>{% endif %}
+    <h3>Due in the next 30 days</h3>
+    {% if d.soon %}<table><tbody>{% for x in d.soon %}<tr><td><a href="{{ root }}/compliance/{{ x.id }}">{{ x.name }}</a></td><td class="num">{{ x.next_due }}</td><td>{{ x.authority }}</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">Nothing due in 30 days.</p>{% endif %}
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Tasks due (next 14 days)</h2>
+    {% if d.tasks_due %}<table><tbody>{% for t in d.tasks_due %}<tr><td><a href="{{ root }}/tasks/{{ t.id }}">{{ t.title }}</a></td><td><span class="pill {{ t.priority }}">{{ t.priority }}</span></td><td class="num">{{ t.due_date or '' }}</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">No tasks due.</p>{% endif %}
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Open complaints</h2>
+    {% if d.open_complaints %}<table><tbody>{% for c in d.open_complaints %}<tr><td class="num">{{ c.date }}</td><td><a href="{{ root }}/complaints/{{ c.id }}">{{ c.summary }}</a></td><td><span class="pill {{ c.severity }}">{{ c.severity }}</span></td><td class="num">{{ c.batch_no or '' }}</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">No open complaints.</p>{% endif %}
+    <h3>Batches with QC gaps</h3>
+    {% if d.batch_issues %}<table><tbody>{% for b in d.batch_issues %}<tr><td><a href="{{ root }}/batches/{{ b.id }}">{{ b.batch_no }}</a> · {{ b.product }}</td><td><span class="pill {{ b.qc_result }}">{{ b.qc_result }}</span></td><td class="num">{{ b.missing_checks }} checks missing</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">All received batches fully checked.</p>{% endif %}
+  </div>
+</div>
+
+<p class="muted" style="margin-top:20px">Records: {{ d.counts.documents }} documents · {{ d.counts.suppliers }} suppliers · {{ d.counts.batches }} batches · {{ d.counts.complaints }} complaints · {{ d.counts.tasks }} tasks · {{ d.counts.contacts }} contacts</p>
+{% endblock %}

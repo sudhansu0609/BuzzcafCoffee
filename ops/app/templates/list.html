@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block title %}{{ r.plural }} · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div><h1>{{ r.icon }} {{ r.plural }}</h1><p class="sub">{{ r.description }}</p></div>
+  <a class="btn" href="{{ root }}/{{ r.key }}/new">+ New {{ r.singular|lower }}</a>
+</div>
+<form class="search" method="get" style="margin-bottom:14px">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search {{ r.plural|lower }}…" style="max-width:340px">
+  {% set sf = r.fields|selectattr('name','equalto','status')|list %}
+  {% if sf %}<select name="status" style="max-width:200px"><option value="">any status</option>{% for o in sf[0].options %}<option value="{{ o }}" {{ 'selected' if status == o else '' }}>{{ o }}</option>{% endfor %}</select>{% endif %}
+  <button class="btn ghost" type="submit">Filter</button>
+  {% if q or status %}<a href="{{ root }}/{{ r.key }}" class="muted">clear</a>{% endif %}
+</form>
+<div class="tw">
+<table>
+  <thead><tr>{% for c in r.list_columns %}<th>{{ r.field(c).label }}</th>{% endfor %}<th></th></tr></thead>
+  <tbody>
+  {% for row in rows %}
+    <tr>
+      {% for c in r.list_columns %}{% set f = r.field(c) %}
+      <td>{% if c == r.title_field %}<a href="{{ root }}/{{ r.key }}/{{ row.id }}"><b>{{ row[c] }}</b></a>{% else %}{{ m.cell(r, f, row, refs) }}{% endif %}</td>
+      {% endfor %}
+      <td><a href="{{ root }}/{{ r.key }}/{{ row.id }}/edit" class="muted">edit</a></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="{{ r.list_columns|length + 1 }}" class="muted">No {{ r.plural|lower }} yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<p class="muted" style="margin-top:8px">{{ rows|length }} rows · <a href="{{ root }}/api/{{ r.key }}">JSON</a></p>
+{% endblock %}

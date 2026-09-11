@@ -1,0 +1,1049 @@
+<title>Buzzcaf Roast Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+
+<style>
+:root{
+  --ground:#F6F7F2;
+  --surface:#FFFFFF;
+  --surface-2:#EEF1E7;
+  --ink:#191C15;
+  --ink-2:#4A5142;
+  --ink-3:#7A8271;
+  --rule:#DEE3D5;
+  --rule-strong:#C4CBB8;
+  --accent:#3F6135;
+  --accent-2:#2E4726;
+  --accent-soft:#E2EBD9;
+  --money:#8A5A17;
+  --money-soft:#F4E8D4;
+  --risk:#9E3B2B;
+  --risk-soft:#F7E1DD;
+
+  --f-display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+
+  --step--1:0.8125rem;
+  --step-0:1rem;
+  --step-1:1.1875rem;
+  --step-2:1.4375rem;
+  --step-3:1.8125rem;
+  --step-4:2.375rem;
+  --step-5:3.25rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#12150E;
+    --surface:#1A1E15;
+    --surface-2:#232820;
+    --ink:#E9ECE2;
+    --ink-2:#A8B09D;
+    --ink-3:#7C8474;
+    --rule:#2B3125;
+    --rule-strong:#3D4535;
+    --accent:#94B980;
+    --accent-2:#B4D2A0;
+    --accent-soft:#22301E;
+    --money:#D9A961;
+    --money-soft:#31270F;
+    --risk:#E4917F;
+    --risk-soft:#38201B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12150E;
+  --surface:#1A1E15;
+  --surface-2:#232820;
+  --ink:#E9ECE2;
+  --ink-2:#A8B09D;
+  --ink-3:#7C8474;
+  --rule:#2B3125;
+  --rule-strong:#3D4535;
+  --accent:#94B980;
+  --accent-2:#B4D2A0;
+  --accent-soft:#22301E;
+  --money:#D9A961;
+  --money-soft:#31270F;
+  --risk:#E4917F;
+  --risk-soft:#38201B;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:var(--step-0);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+
+/* ---------- shell ---------- */
+.shell{max-width:1180px;margin:0 auto;padding:0 24px 96px}
+.layout{display:grid;grid-template-columns:1fr;gap:0}
+@media (min-width:1080px){
+  .layout{grid-template-columns:214px minmax(0,1fr);gap:56px;align-items:start}
+}
+
+/* ---------- masthead ---------- */
+.masthead{
+  border-bottom:1px solid var(--rule-strong);
+  padding:56px 0 34px;
+  margin-bottom:44px;
+}
+.brandline{
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  font-family:var(--f-mono);font-size:var(--step--1);
+  letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:22px;
+}
+.brandline .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;align-self:center}
+h1{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(2.6rem,6.5vw,var(--step-5));
+  line-height:1.02;letter-spacing:-0.01em;
+  margin:0 0 20px;text-wrap:balance;max-width:16ch;
+}
+h1 em{font-style:italic;color:var(--accent)}
+.standfirst{
+  font-size:var(--step-1);line-height:1.5;color:var(--ink-2);
+  max-width:62ch;margin:0;
+}
+
+/* ---------- toc ---------- */
+.toc{display:none}
+@media (min-width:1080px){
+  .toc{
+    display:block;position:sticky;top:28px;
+    font-family:var(--f-mono);font-size:0.75rem;line-height:1.45;
+  }
+  .toc .toc-h{
+    text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);
+    padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--rule);
+  }
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+  .toc a{
+    display:flex;gap:9px;padding:5px 8px;border-radius:3px;
+    color:var(--ink-2);text-decoration:none;border-left:2px solid transparent;
+  }
+  .toc a:hover{background:var(--surface-2);color:var(--ink)}
+  .toc a.on{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft)}
+  .toc a .n{color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .toc a.on .n{color:var(--accent)}
+}
+
+/* ---------- sections ---------- */
+section{padding-top:14px;margin-bottom:64px;scroll-margin-top:24px}
+.sec-head{margin-bottom:26px}
+.eyebrow{
+  font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2{
+  font-family:var(--f-body);font-weight:600;font-size:var(--step-3);
+  line-height:1.18;letter-spacing:-0.015em;margin:0;text-wrap:balance;
+}
+h3{
+  font-family:var(--f-body);font-weight:600;font-size:var(--step-1);
+  line-height:1.3;margin:34px 0 12px;letter-spacing:-0.008em;text-wrap:balance;
+}
+h4{
+  font-family:var(--f-mono);font-weight:600;font-size:0.76rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  margin:26px 0 10px;
+}
+p{margin:0 0 15px;max-width:68ch}
+ul,ol{max-width:68ch;padding-left:1.15em;margin:0 0 15px}
+li{margin-bottom:7px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600;color:var(--ink)}
+code{
+  font-family:var(--f-mono);font-size:0.86em;
+  background:var(--surface-2);padding:1px 5px;border-radius:3px;
+  border:1px solid var(--rule);
+}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.rupee{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--money);font-weight:500}
+
+/* ---------- callouts ---------- */
+.call{
+  border-left:2px solid var(--accent);
+  background:var(--accent-soft);
+  padding:16px 20px;margin:22px 0;border-radius:0 4px 4px 0;
+}
+.call p:last-child{margin-bottom:0}
+.call.warn{border-left-color:var(--risk);background:var(--risk-soft)}
+.call .lbl{
+  font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--accent-2);display:block;margin-bottom:7px;
+}
+.call.warn .lbl{color:var(--risk)}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:0.875rem;min-width:560px}
+th{
+  font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;
+  text-align:left;padding:11px 14px;
+  border-bottom:1px solid var(--rule-strong);white-space:nowrap;
+  background:var(--surface-2);
+}
+td{padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}
+tbody tr:last-child td{border-bottom:none}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.money{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--money);white-space:nowrap}
+tfoot td{
+  border-top:1px solid var(--rule-strong);font-weight:600;
+  background:var(--surface-2);
+}
+caption{
+  caption-side:bottom;text-align:left;padding:10px 14px;
+  font-size:0.78rem;color:var(--ink-3);border-top:1px solid var(--rule);
+}
+
+/* ---------- pills ---------- */
+.pill{
+  display:inline-block;font-family:var(--f-mono);font-size:0.68rem;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;white-space:nowrap;
+  border:1px solid var(--rule-strong);color:var(--ink-2);background:var(--surface-2);
+}
+.pill.block{background:var(--risk-soft);border-color:var(--risk);color:var(--risk)}
+.pill.go{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-2)}
+:root[data-theme="dark"] .pill.go,
+:root:not([data-theme="light"]) .pill.go{color:var(--accent-2)}
+.pill.later{background:transparent}
+
+/* ---------- phases ---------- */
+.phases{display:flex;flex-direction:column;gap:0;margin:26px 0}
+.phase{
+  display:grid;grid-template-columns:60px minmax(0,1fr);gap:22px;
+  padding:24px 0;border-top:1px solid var(--rule);
+}
+.phase:last-child{border-bottom:1px solid var(--rule)}
+.phase-n{
+  font-family:var(--f-display);font-size:2.5rem;line-height:.9;
+  color:var(--rule-strong);text-align:right;font-variant-numeric:tabular-nums;
+}
+.phase-roast{
+  font-family:var(--f-mono);font-size:0.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);margin-top:8px;text-align:right;
+  line-height:1.25;
+}
+.phase h3{margin:0 0 4px;font-size:var(--step-1)}
+.phase .wks{
+  font-family:var(--f-mono);font-size:0.74rem;color:var(--ink-3);
+  margin-bottom:11px;letter-spacing:.03em;
+}
+.phase ul{margin:0;max-width:64ch}
+.phase .gate{
+  margin-top:12px;padding-top:11px;border-top:1px dashed var(--rule-strong);
+  font-size:0.85rem;color:var(--ink-2);max-width:64ch;
+}
+.phase .gate b{
+  font-family:var(--f-mono);font-size:0.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;
+  display:block;margin-bottom:3px;
+}
+@media (max-width:600px){
+  .phase{grid-template-columns:44px minmax(0,1fr);gap:16px}
+  .phase-n{font-size:1.9rem}
+  .phase-roast{font-size:0.58rem}
+}
+
+/* ---------- stack diagram ---------- */
+.stack{display:flex;flex-direction:column;gap:8px;margin:22px 0;max-width:640px}
+.tier{
+  border:1px solid var(--rule);border-radius:5px;background:var(--surface);
+  padding:13px 16px;display:grid;grid-template-columns:104px minmax(0,1fr);
+  gap:16px;align-items:baseline;
+}
+.tier .t-lbl{
+  font-family:var(--f-mono);font-size:0.68rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.tier .t-body{font-size:0.875rem;line-height:1.5}
+.tier .t-body b{font-weight:600}
+.tier.hl{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:600px){
+  .tier{grid-template-columns:1fr;gap:5px}
+}
+
+/* ---------- checklist ---------- */
+.checks{list-style:none;padding:0;margin:18px 0;max-width:68ch}
+.checks li{
+  display:grid;grid-template-columns:16px minmax(0,1fr);gap:11px;
+  padding:9px 0;border-bottom:1px solid var(--rule);margin:0;
+  font-size:0.9rem;line-height:1.5;
+}
+.checks li:last-child{border-bottom:none}
+.checks li::before{
+  content:"";width:13px;height:13px;margin-top:4px;
+  border:1px solid var(--rule-strong);border-radius:2px;background:var(--surface);
+}
+
+/* ---------- footnote ---------- */
+.foot{
+  border-top:1px solid var(--rule-strong);margin-top:20px;padding-top:22px;
+  font-size:0.82rem;color:var(--ink-3);max-width:68ch;
+}
+.foot p{max-width:68ch;margin-bottom:9px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+
+<div class="shell">
+
+<header class="masthead">
+  <div class="brandline">
+    <span>Buzzcaf Coffee</span><span class="dot"></span>
+    <span>Launch Plan</span><span class="dot"></span>
+    <span>India &middot; D2C + Marketplace</span>
+  </div>
+  <h1>From green bean to <em>first repeat order</em></h1>
+  <p class="standfirst">A staged plan to launch a private-label specialty coffee brand in India &mdash; licences, unit economics, a self-hosted storefront that moves from your laptop to a VPS without a rewrite, and the marketplace sequence that gets to a repeat customer fastest.</p>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Contents">
+    <div class="toc-h">Contents</div>
+    <ol id="tocList"></ol>
+  </nav>
+
+  <main>
+
+<section id="calls">
+  <div class="sec-head">
+    <div class="eyebrow">Where this plan takes a position</div>
+    <h2>Five calls that decide everything else</h2>
+  </div>
+
+  <p>Most coffee launch plans are a long list of tasks in no particular order. This one is built around five decisions. Get these right and the task list mostly writes itself; get one wrong and the rest is wasted motion.</p>
+
+  <h3>1. Don't roast. Not yet.</h3>
+  <p>Private-label with a contract roaster. Under FSSAI you become the <strong>Marketer</strong> and the roaster stays the manufacturer &mdash; your pack carries both names and both licence numbers. Own roasting converts a <span class="rupee">~&#8377;2L</span> launch into a <span class="rupee">&#8377;10L+</span> one, adds a manufacturing licence, a premises, and a skill you'd be learning on live inventory. Revisit it at month six, once you know which roast profile actually sells.</p>
+
+  <h3>2. The website is not the bottleneck</h3>
+  <p>You can build the storefront in two weeks. You cannot compress a trademark search, an FSSAI application, a packaging print run, and three rounds of cupping with a roaster into two weeks. Those run from day one and gate everything. Build the site <em>while</em> you wait, not before you start waiting.</p>
+
+  <h3>3. Amazon first, own site alongside &mdash; and this is a recent change</h3>
+  <p>In March 2026 Amazon India dropped the referral fee to <strong>0% for products priced &#8377;300&ndash;1,000</strong> in Grocery &amp; Gourmet. Flipkart did something similar in November 2025: <strong>0% commission on everything under &#8377;1,000</strong>. A &#8377;599 coffee pouch now pays no commission on either platform &mdash; only a closing fee and weight handling.</p>
+  <p>That inverts the usual D2C advice. Marketplace margin on your core SKU is currently within about &#8377;50 of your own website's, and it comes with traffic you don't have to buy. Your own site still matters &mdash; it owns the customer relationship, the subscription, and the data &mdash; but it doesn't have to carry the launch.</p>
+
+  <h3>4. Skip quick commerce entirely at launch</h3>
+  <p>Blinkit, Zepto and Instamart look like the obvious channel for coffee. They are a capital trap for a brand with no sell-through history. Blinkit moved to a fully inventory-led model in September 2025 &mdash; there is no published rate card any more, only a trade margin negotiated under NDA. Reported entry costs run to <span class="rupee">&#8377;25,000</span> per SKU per state on Blinkit and <span class="rupee">&#8377;8&ndash;10 lakh</span> per quarter on Instamart, with ongoing ad spend required just to stay visible.</p>
+  <div class="call warn">
+    <span class="lbl">The number to remember</span>
+    <p>One founder, quoted in Storyboard18 (July 2025), spent <strong>&#8377;6 lakh</strong> getting listed across all three quick-commerce platforms and generated <strong>&#8377;1.2 lakh</strong> in revenue over three months. Reported platform take plus mandatory ad spend runs 35&ndash;50% of selling price &mdash; a level only brands with 70%+ gross margins survive. Packaged coffee at your scale does not clear that bar.</p>
+  </div>
+  <p>The tell is in the market itself: Blue Tokai, Sleepy Owl and Third Wave are on quick commerce. Subko, Naivo and Halli Berri are not. Quick-commerce presence tracks capital and negotiating leverage, not product quality. Earn it later with proven sell-through, or enter through a distributor.</p>
+
+  <h3>5. The first order is an acquisition cost, not a profit</h3>
+  <p>Contribution on a single-pouch order is roughly <span class="rupee">&#8377;199</span>. That is your absolute ceiling on cost-per-acquisition if order one must pay for itself &mdash; and paid acquisition for a new Indian coffee brand generally costs more than that. So the first order won't be profitable, and trying to make it profitable will cap your growth.</p>
+  <p>The business is the <em>second</em> order and the twelve after it. Coffee is genuinely consumable &mdash; a household finishes 250g in two to four weeks. That makes subscription and reorder prompts launch features, not v2 features. Every structural choice below is bent toward repeat purchase.</p>
+</section>
+
+<section id="roadmap">
+  <div class="sec-head">
+    <div class="eyebrow">Sequence &middot; roughly 20 weeks to a working business</div>
+    <h2>The roadmap, in five phases</h2>
+  </div>
+  <p>Named after the stages of an actual roast, because the shape genuinely matches: a long invisible preparation, then a rapid transformation, then an audible milestone, then the window where quality is actually determined.</p>
+
+  <div class="phases">
+    <div class="phase">
+      <div>
+        <div class="phase-n">01</div>
+        <div class="phase-roast">Drying</div>
+      </div>
+      <div>
+        <h3>Foundation &amp; clearances</h3>
+        <div class="wks">Weeks 1&ndash;3 &middot; nothing visible happens, everything depends on it</div>
+        <ul>
+          <li><strong>Trademark search on "Buzzcaf" in Class 30</strong> &mdash; before any design or printing spend. This is the cheapest risk to retire.</li>
+          <li>Udyam registration (free, instant) &mdash; <em>before</em> filing the trademark, because it halves the fee.</li>
+          <li>File TM-A in Class 30. GST registration. Current account.</li>
+          <li>Resolve the FSSAI tier question (see below), then file on FoSCoS under <strong>Marketer</strong> kind-of-business.</li>
+          <li>Shortlist 5 contract roasters in Chikmagalur / Coorg / Bengaluru. Request quotes and samples.</li>
+          <li>Lock the domain and social handles.</li>
+        </ul>
+        <div class="gate"><b>Gate to phase 2</b>Trademark search comes back clean, and you have roast samples from at least three roasters in hand.</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="phase-n">02</div>
+        <div class="phase-roast">Maillard</div>
+      </div>
+      <div>
+        <h3>Product, brand and packaging</h3>
+        <div class="wks">Weeks 3&ndash;8 &middot; where the thing actually develops a character</div>
+        <ul>
+          <li>Cup the samples blind. Pick your roaster on consistency, not on one good batch.</li>
+          <li>Lock 3 roast profiles and get them repeated across two separate batches to prove the roaster can hold a profile.</li>
+          <li>Brand identity and pack design. Build the label against the compliance checklist &mdash; a non-compliant pack is a reprint, not an edit.</li>
+          <li>Get printed-pouch quotes from 3+ suppliers. Confirm MOQ, plate/setup charges, and valve type.</li>
+          <li>Product photography. Amazon needs pure-white-background hero shots; your site and Instagram need something with more character. Shoot both in one session.</li>
+          <li>Storefront build runs in parallel through this whole phase.</li>
+        </ul>
+        <div class="gate"><b>Gate to phase 3</b>Packaging printed and delivered, first batch roasted and packed, FSSAI licence number in hand and printed on the pack.</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="phase-n">03</div>
+        <div class="phase-roast">First Crack</div>
+      </div>
+      <div>
+        <h3>First sale</h3>
+        <div class="wks">Weeks 7&ndash;12 &middot; the audible milestone</div>
+        <ul>
+          <li>Amazon Seller Central: register, request Grocery &amp; Gourmet category approval, apply for GTIN exemption, enrol in Brand Registry on the <em>pending</em> TM application.</li>
+          <li>Storefront MVP live: catalogue, grind selector, checkout, payment gateway, Shiprocket, five policy pages.</li>
+          <li>Seed 30&ndash;50 sample packs to people who will actually give you feedback and leave reviews.</li>
+          <li>Get to 15+ reviews at 4.3&#8288;+ on Amazon before spending anything meaningful on ads &mdash; below that, traffic doesn't convert and you're buying nothing.</li>
+          <li>Ship the first 50 orders yourself. Read every complaint personally.</li>
+        </ul>
+        <div class="gate"><b>Gate to phase 4</b>50 orders shipped, contribution margin verified against the model, and at least a handful of unprompted repeat purchases.</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="phase-n">04</div>
+        <div class="phase-roast">Development</div>
+      </div>
+      <div>
+        <h3>Retention and the second channel</h3>
+        <div class="wks">Weeks 12&ndash;20 &middot; the window that determines final quality</div>
+        <ul>
+          <li>Ship subscriptions. This is the single highest-return feature you will build.</li>
+          <li>WhatsApp reorder flows &mdash; timed to when a 250g bag actually runs out, not to a generic drip schedule.</li>
+          <li>Flipkart listing live. Register on JioMart (cheap, low effort, low expectations).</li>
+          <li>Turn on paid acquisition only once repeat rate is measurable. Ads amplify retention; they don't substitute for it.</li>
+          <li>Brew-guide content engine &mdash; your existing media capability is a genuine advantage here and most coffee brands are bad at it.</li>
+          <li>Qualify a second roaster. Single-supplier dependency is your biggest operational risk.</li>
+        </ul>
+        <div class="gate"><b>Gate to phase 5</b>90-day repeat rate above 25%, subscriptions at 15%+ of orders, contribution margin holding at scale.</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="phase-n">05</div>
+        <div class="phase-roast">Drop</div>
+      </div>
+      <div>
+        <h3>The month-six decisions</h3>
+        <div class="wks">Month 6+ &middot; when you decide what this becomes</div>
+        <ul>
+          <li><strong>Own roasting?</strong> Only if volume justifies it and profile control is genuinely limiting you.</li>
+          <li><strong>Quick commerce?</strong> Only with sell-through data to negotiate on, and only via distributor or on terms you've modelled.</li>
+          <li><strong>Corporate gifting and B2B?</strong> High AOV, low CAC, and Diwali is a real revenue event. Often the best answer at this stage.</li>
+          <li><strong>Cafés and offline?</strong> Slow, relationship-driven, but it's where brand credibility compounds.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="licences">
+  <div class="sec-head">
+    <div class="eyebrow">Compliance &middot; verified September 2026</div>
+    <h2>Licences, in the order you should get them</h2>
+  </div>
+
+  <div class="call warn">
+    <span class="lbl">Verify this in week 1 &mdash; it is a &#8377;100 vs &#8377;7,500 question</span>
+    <p>The FSS (Licensing and Registration) <strong>Amendment Regulations 2026</strong>, effective 1 April 2026, raised the Basic Registration ceiling from &#8377;12 lakh to <strong>&#8377;1.5 crore</strong> turnover. Most guides online still quote the old number. On the new thresholds you'd need only Basic Registration at &#8377;100/year.</p>
+    <p><strong>However:</strong> several compliance sources state that any food business selling through e-commerce needs a <strong>Central Licence regardless of turnover</strong>. Others read that mandate as applying to the <em>platform operator</em> (Amazon itself), not to brands listing on it. No primary FSSAI/FoSCoS text settling this could be found. Confirm directly with FoSCoS support or a licensing consultant before you assume Basic Registration is enough. If unresolved, take the Central Licence &mdash; &#8377;7,500/year is cheap insurance against a delisting.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Government fees only; professional/CA fees are extra. Sequence matters &mdash; rows are in the order to file them.</caption>
+      <thead>
+        <tr><th>#</th><th>Registration</th><th>Cost</th><th>Why / when</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="n">1</td>
+          <td><strong>Udyam (MSME)</strong></td>
+          <td class="money">Free</td>
+          <td>Instant, online. Do this <em>first</em> &mdash; it's what unlocks the concessional trademark fee and a GS1 barcode subsidy.</td>
+          <td><span class="pill go">Day 1</span></td>
+        </tr>
+        <tr>
+          <td class="n">2</td>
+          <td><strong>Trademark, Class 30</strong></td>
+          <td class="money">&#8377;4,500</td>
+          <td>Per class, e-filing, with a valid Udyam certificate &mdash; otherwise &#8377;9,000. Search before you design. A <em>pending</em> application number is enough for Amazon Brand Registry.</td>
+          <td><span class="pill block">Blocks print</span></td>
+        </tr>
+        <tr>
+          <td class="n">3</td>
+          <td><strong>GST registration</strong></td>
+          <td class="money">Free</td>
+          <td>Mandatory for marketplace selling regardless of turnover, under CGST s.24. The small-supplier exemption doesn't help you &mdash; it's intra-state only.</td>
+          <td><span class="pill block">Blocks listing</span></td>
+        </tr>
+        <tr>
+          <td class="n">4</td>
+          <td><strong>FSSAI &mdash; Marketer</strong></td>
+          <td class="money">&#8377;100&ndash;7,500/yr</td>
+          <td>File under <strong>Marketer</strong> kind-of-business on FoSCoS, not generic trading. Licences issued after 1 Apr 2026 have perpetual validity; the annual fee still applies. Amazon FBA additionally wants a "Retailer" KOB.</td>
+          <td><span class="pill block">Blocks everything</span></td>
+        </tr>
+        <tr>
+          <td class="n">5</td>
+          <td><strong>Current account</strong></td>
+          <td class="money">Varies</td>
+          <td>Needs GST certificate, Udyam, PAN, and usually Shop &amp; Establishment.</td>
+          <td><span class="pill go">Week 2</span></td>
+        </tr>
+        <tr>
+          <td class="n">6</td>
+          <td><strong>Shop &amp; Establishment</strong></td>
+          <td class="money">State-dependent</td>
+          <td>Required in most states if you operate from an office or warehouse rather than home. Banks usually ask for it.</td>
+          <td><span class="pill go">Week 2</span></td>
+        </tr>
+        <tr>
+          <td class="n">7</td>
+          <td><strong>Barcodes / GTIN</strong></td>
+          <td class="money">&#8377;0</td>
+          <td>Take the <strong>free GTIN exemption</strong> on Amazon/Flipkart at launch. Only buy GS1 India barcodes (~&#8377;16,500 year one, with up to 80% MSME reimbursement available) when offline retail requires them.</td>
+          <td><span class="pill later">Defer</span></td>
+        </tr>
+        <tr>
+          <td class="n">8</td>
+          <td><strong>IEC</strong></td>
+          <td class="money">&#8377;500</td>
+          <td>Only if you export. Not needed for domestic D2C.</td>
+          <td><span class="pill later">Skip</span></td>
+        </tr>
+        <tr>
+          <td class="n">9</td>
+          <td><strong>Coffee Board</strong></td>
+          <td class="money">&mdash;</td>
+          <td>Its RCMC framework is <strong>export-only</strong>. No registration is required to buy green beans or sell roasted coffee domestically &mdash; despite some third-party sites claiming otherwise.</td>
+          <td><span class="pill later">Not needed</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>GST rates that apply to you</h3>
+  <p>The September 2025 rationalisation changed one of these significantly, and it affects which products are worth launching.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Product</th><th>HSN</th><th>Rate</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Green / unroasted beans</td><td class="n">0901 11</td><td class="n">Nil</td><td>Your main input carries no GST &mdash; so no input credit on it either.</td></tr>
+        <tr><td><strong>Roasted beans &amp; ground coffee</strong></td><td class="n">0901 21/22</td><td class="n">5%</td><td>Unchanged. Your core SKU.</td></tr>
+        <tr><td>Instant / soluble coffee</td><td class="n">2101 11/12</td><td class="n">5%</td><td><strong>Cut from 18%</strong> in Sept 2025 &mdash; instant is meaningfully more attractive than it was.</td></tr>
+        <tr><td>Ready-to-drink canned / bottled coffee</td><td class="n">2202 91/99</td><td class="n">40%</td><td><strong>Do not treat this as a line extension.</strong> It sits in the sin-goods band and is a completely different margin structure.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What must appear on the pack</h3>
+  <p>Two laws apply at once &mdash; FSS (Labelling &amp; Display) Regulations 2020 and Legal Metrology (Packaged Commodities) Rules 2011. Miss one and the whole print run is scrap. Minimum font size for Schedule&nbsp;II declarations is <strong>3&nbsp;mm</strong>.</p>
+  <ul class="checks">
+    <li>Name of the food, and list of ingredients in descending order by weight</li>
+    <li>Nutritional information per 100&nbsp;g &mdash; energy, protein, carbs, total sugar, total fat, saturated fat, trans fat, sodium</li>
+    <li>Veg symbol: green filled circle inside a green-outlined square</li>
+    <li>Allergen declaration, if any dairy or flavouring is involved</li>
+    <li><strong>"Manufactured by"</strong> &mdash; roaster's name, full address and FSSAI licence number</li>
+    <li><strong>"Marketed by"</strong> &mdash; Buzzcaf's name, full address and FSSAI licence number</li>
+    <li>FSSAI logo and licence number, in a colour that contrasts with the background</li>
+    <li>Net quantity, and MRP inclusive of all taxes</li>
+    <li>Consumer care details &mdash; phone and email</li>
+    <li>Batch / lot / code number</li>
+    <li>Date of manufacture or packing, and Best Before date, as DD/MM/YYYY</li>
+    <li>Storage and usage instructions</li>
+    <li>Country of origin &mdash; only if you import beans</li>
+  </ul>
+  <div class="call">
+    <span class="lbl">Easy to miss</span>
+    <p>Since the Legal Metrology amendment of October 2023, the <strong>product listing page itself</strong> must display manufacturer/packer/brand-owner name and address, generic name, net quantity, MRP inclusive of taxes, consumer-care details and country of origin &mdash; before the physical pack ever reaches the buyer. That applies to your own website as much as to Amazon. Build these fields into the product data model from the start rather than retrofitting them.</p>
+  </div>
+</section>
+
+<section id="product">
+  <div class="sec-head">
+    <div class="eyebrow">Product</div>
+    <h2>A deliberately narrow opening line-up</h2>
+  </div>
+  <p>Four SKUs, one pack size. Every additional SKU multiplies inventory risk, packaging MOQs, photography, listing work and the chance that something sits on a shelf going stale. Coffee has a real freshness clock &mdash; breadth is genuinely expensive here in a way it isn't for most products.</p>
+
+  <div class="tw">
+    <table>
+      <caption>MRP positions you in the mainstream-specialty tier alongside Sleepy Owl (&#8377;599) and below Third Wave (&#8377;700) and Blue Tokai (&#8377;750).</caption>
+      <thead><tr><th>SKU</th><th>Format</th><th>MRP</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Signature Blend</strong><br><span style="color:var(--ink-3)">Medium roast, Chikmagalur</span></td><td class="n">250 g</td><td class="money">&#8377;599</td><td>The default. Forgiving across brew methods, the one you push in ads and subscriptions.</td></tr>
+        <tr><td><strong>Dark / Espresso</strong><br><span style="color:var(--ink-3)">Dark roast, blend</span></td><td class="n">250 g</td><td class="money">&#8377;599</td><td>Covers moka pot, espresso, and the large Indian audience that drinks coffee with milk and sugar.</td></tr>
+        <tr><td><strong>Single Origin</strong><br><span style="color:var(--ink-3)">Light-medium, estate-named</span></td><td class="n">250 g</td><td class="money">&#8377;749</td><td>Credibility SKU. Rotating estate lots. Signals you're a real coffee company, not a repackager.</td></tr>
+        <tr><td><strong>Sampler</strong><br><span style="color:var(--ink-3)">3 &times; 60 g of the above</span></td><td class="n">180 g</td><td class="money">&#8377;399</td><td><strong>Your acquisition SKU.</strong> Low-risk first purchase for a brand nobody has heard of. Most first-time buyers should land here.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The differentiator worth taking seriously</h3>
+  <p>Offer <strong>South Indian filter grind</strong> as a first-class option on every product, alongside whole bean, espresso, moka pot, pour-over, French press and AeroPress. It is how an enormous number of Indian households actually make coffee, and most premium D2C brands treat it as an afterthought or omit it entirely. It costs you a dropdown option and a paragraph of copy, and it addresses a large, underserved, genuinely loyal segment.</p>
+
+  <h3>What goes on every product page</h3>
+  <p>Specialty buyers expect this, and it is what separates a coffee brand from a coffee reseller. It also gives you real content to write, which is worth more than filler copy.</p>
+  <ul>
+    <li><strong>Roast date</strong>, not just best-before &mdash; and a promise to ship within 48 hours of roasting</li>
+    <li>Estate and region &mdash; Chikmagalur, Coorg, Baba Budangiri, Araku, Wayanad</li>
+    <li>Altitude in MASL, varietal (S795, Selection 9, Kent, Cauvery), processing method (washed / natural / honey / monsooned)</li>
+    <li>Roast level on a visible scale, and tasting notes</li>
+    <li>Recommended brew ratio and grind for the method selected</li>
+  </ul>
+</section>
+
+<section id="economics">
+  <div class="sec-head">
+    <div class="eyebrow">Money &middot; per unit, all figures ex-GST unless noted</div>
+    <h2>Unit economics, channel by channel</h2>
+  </div>
+
+  <h3>What a 250&nbsp;g pouch costs to make</h3>
+  <p>Roasting loses about 16% of green weight, so a 250&nbsp;g retail pouch needs roughly 300&nbsp;g of green beans.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Input</th><th>Basis</th><th>Cost</th><th>Confidence</th></tr></thead>
+      <tbody>
+        <tr><td>Green arabica</td><td>300 g @ &#8377;700/kg</td><td class="money">&#8377;210</td><td><span class="pill">Range &#8377;500&ndash;900/kg</span></td></tr>
+        <tr><td>Contract roasting</td><td>assumed &#8377;150/kg roasted</td><td class="money">&#8377;38</td><td><span class="pill block">Unverified &mdash; quote it</span></td></tr>
+        <tr><td>Printed pouch + valve</td><td>at 1,000 units</td><td class="money">&#8377;22</td><td><span class="pill block">Plain is &#8377;8&ndash;10; printed costs more</span></td></tr>
+        <tr><td>Batch/roast-date label</td><td></td><td class="money">&#8377;3</td><td><span class="pill">Estimate</span></td></tr>
+        <tr><td>Packing labour + QC</td><td></td><td class="money">&#8377;12</td><td><span class="pill">Estimate</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2"><strong>Landed COGS per pouch</strong></td><td class="money"><strong>&#8377;285</strong></td><td><span class="pill">Plan &#8377;255&ndash;320</span></td></tr></tfoot>
+    </table>
+  </div>
+  <div class="call warn">
+    <span class="lbl">Two numbers you must replace with real quotes</span>
+    <p>No reliable India-specific <strong>toll-roasting rate</strong> could be found from any credible published source, and <strong>printed</strong> pouch pricing (as opposed to plain stock pouches at &#8377;8&ndash;10) varies widely with print method, MOQ and plate charges. Get three quotes each before committing to the MRP. If roasting comes back at &#8377;300/kg instead of &#8377;150/kg, your contribution drops by about &#8377;38 a unit and the whole model shifts.</p>
+  </div>
+
+  <h3>Contribution per order, by channel</h3>
+  <p>One pouch at &#8377;599 MRP. MRP is inclusive of GST, so net realisation is <span class="num">599 &divide; 1.05 = &#8377;570</span>.</p>
+  <div class="tw">
+    <table>
+      <caption>Marketplace fees attract 18% GST, recoverable as input credit, so they're shown net. Flipkart's rate card is not public &mdash; those figures are estimates to replace once you're inside Seller Hub.</caption>
+      <thead>
+        <tr><th>Line</th><th>Own site</th><th>Amazon Easy Ship</th><th>Flipkart <span class="pill">est.</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Net revenue</td><td class="n">570</td><td class="n">570</td><td class="n">570</td></tr>
+        <tr><td>Landed COGS</td><td class="n">&minus;285</td><td class="n">&minus;285</td><td class="n">&minus;285</td></tr>
+        <tr><td>Referral / commission</td><td class="n">&mdash;</td><td class="n">0</td><td class="n">0</td></tr>
+        <tr><td>Closing / fixed fee</td><td class="n">&mdash;</td><td class="n">&minus;48</td><td class="n">&minus;35</td></tr>
+        <tr><td>Shipping / weight handling</td><td class="n">&minus;45</td><td class="n">&minus;55</td><td class="n">&minus;40</td></tr>
+        <tr><td>Payment gateway</td><td class="n">&minus;14</td><td class="n">&mdash;</td><td class="n">&minus;12</td></tr>
+        <tr><td>Outer packaging</td><td class="n">&minus;15</td><td class="n">&minus;15</td><td class="n">&minus;15</td></tr>
+        <tr><td>RTO / returns provision</td><td class="n">&minus;12</td><td class="n">&minus;15</td><td class="n">&minus;15</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td><strong>Contribution</strong></td><td class="money"><strong>&#8377;199</strong></td><td class="money"><strong>&#8377;152</strong></td><td class="money"><strong>&#8377;168</strong></td></tr>
+        <tr><td>&hellip; as % of net revenue</td><td class="n">34.9%</td><td class="n">26.7%</td><td class="n">29.5%</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="call">
+    <span class="lbl">Stress-test this one</span>
+    <p>Amazon's 0% referral fee is a promotional policy, not a permanent structure. At the previous <strong>7%</strong> rate, Amazon contribution falls from &#8377;152 to about <strong>&#8377;112</strong> &mdash; a 26% cut. Price and plan so the business still works there. Note also that Amazon's closing fees rise again on <strong>7 September 2026</strong> (&#8377;45&nbsp;&rarr;&nbsp;&#8377;48 in the &#8377;501&ndash;1,000 band); the table already uses the new figure.</p>
+  </div>
+
+  <h3>Why quick commerce doesn't clear the bar</h3>
+  <p>At a reported 35&ndash;50% platform take, a &#8377;599 pouch nets you roughly &#8377;342. Against &#8377;285 COGS plus ~&#8377;15 to move stock to their dark stores, that leaves about <span class="rupee">&#8377;42</span> per unit &mdash; <strong>before</strong> the &#8377;25,000-per-SKU-per-state listing cost and the &#8377;2&ndash;3 lakh monthly ad spend needed to stay visible. You would need to sell thousands of units a month just to cover the entry fee. This is the arithmetic behind call #4.</p>
+
+  <h3>Two levers that move contribution more than pricing does</h3>
+  <p><strong>Order size.</strong> Shipping and packaging are per-order, not per-unit. A two-pouch order on your own site yields about <span class="rupee">&#8377;447</span> contribution against <span class="rupee">&#8377;199</span> for one &mdash; 39.2% versus 34.9%. A free-shipping threshold around &#8377;999 is worth more than a price increase, and customers like it more.</p>
+  <p><strong>Prepaid versus COD.</strong> Indian food and FMCG D2C runs roughly 8&ndash;12% RTO, far better than fashion's 20&ndash;35%. But COD orders return at 25&ndash;40% against 4&ndash;12% for prepaid, and COD is 58&ndash;64% of orders in tier-2/3 cities. <strong>Launch prepaid-only with a small discount.</strong> Add COD in month two with address verification and a partial-prepay requirement, once you can afford to learn what your actual RTO rate is.</p>
+
+  <h3>Break-even</h3>
+  <p>Fixed monthly running costs at launch &mdash; VPS and domain, WhatsApp API, email, CA and GST filing, tooling &mdash; land around <span class="rupee">&#8377;10,000</span>, excluding your own time.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Scenario</th><th>Monthly fixed</th><th>Orders to break even</th><th>Per day</th></tr></thead>
+      <tbody>
+        <tr><td>No paid ads &mdash; organic and marketplace only</td><td class="money">&#8377;10,000</td><td class="n">51</td><td class="n">~2</td></tr>
+        <tr><td>With &#8377;25,000/month ad spend</td><td class="money">&#8377;35,000</td><td class="n">176</td><td class="n">~6</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Six orders a day to cover a funded launch is a reachable target. That's the number to hold in your head.</p>
+</section>
+
+<section id="budget">
+  <div class="sec-head">
+    <div class="eyebrow">Capital</div>
+    <h2>What it costs to get to the first order</h2>
+  </div>
+  <p>Assumes you do design, photography, copy and the website yourself &mdash; which, given what you already do, is a real and substantial cost advantage. The right column is what it costs if you outsource those.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Item</th><th>Lean (DIY)</th><th>Funded</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>FSSAI licence</td><td class="money">&#8377;100</td><td class="money">&#8377;7,500</td><td>Basic vs Central, pending the e-commerce question</td></tr>
+        <tr><td>Trademark, Class 30</td><td class="money">&#8377;4,500</td><td class="money">&#8377;12,500</td><td>Govt fee alone vs with an attorney</td></tr>
+        <tr><td>GST + Udyam + incorporation</td><td class="money">&#8377;0</td><td class="money">&#8377;8,000</td><td>Self-filed vs via CA</td></tr>
+        <tr><td>Brand identity &amp; pack design</td><td class="money">&#8377;5,000</td><td class="money">&#8377;40,000</td><td>Fonts/assets only if self-designed</td></tr>
+        <tr><td>Printed pouches, 1,000 units</td><td class="money">&#8377;27,000</td><td class="money">&#8377;35,000</td><td>Includes plate/setup. <span class="pill block">Quote required</span></td></tr>
+        <tr><td>First batch &mdash; 50 kg green + roasting</td><td class="money">&#8377;42,500</td><td class="money">&#8377;85,000</td><td>50 kg yields ~168 pouches; 100 kg yields ~336</td></tr>
+        <tr><td>Photography</td><td class="money">&#8377;3,000</td><td class="money">&#8377;25,000</td><td>Props and backdrop vs a studio shoot</td></tr>
+        <tr><td>Website build</td><td class="money">&#8377;0</td><td class="money">&#8377;80,000</td><td>Self-built vs agency</td></tr>
+        <tr><td>Hosting, domain, tools &mdash; 6 months</td><td class="money">&#8377;12,000</td><td class="money">&#8377;20,000</td><td></td></tr>
+        <tr><td>Shipping supplies</td><td class="money">&#8377;5,000</td><td class="money">&#8377;8,000</td><td>Mailers, tape, filler, printer</td></tr>
+        <tr><td>Launch marketing &amp; seeding</td><td class="money">&#8377;25,000</td><td class="money">&#8377;75,000</td><td>Sample packs, first ad tests</td></tr>
+        <tr><td>Buffer</td><td class="money">&#8377;20,000</td><td class="money">&#8377;50,000</td><td>Something will go wrong. Usually printing.</td></tr>
+      </tbody>
+      <tfoot><tr><td><strong>Total to first order</strong></td><td class="money"><strong>&#8377;1.44 L</strong></td><td class="money"><strong>&#8377;4.46 L</strong></td><td></td></tr></tfoot>
+    </table>
+  </div>
+</section>
+
+<section id="website">
+  <div class="sec-head">
+    <div class="eyebrow">Technical &middot; the part you asked about specifically</div>
+    <h2>The storefront: local first, then remote</h2>
+  </div>
+
+  <h3>Stack</h3>
+  <p>Chosen so that "moving to remote" is an environment variable change and a <code>git push</code>, not a migration. Everything runs in the same containers on your laptop as it does on the server.</p>
+
+  <div class="stack">
+    <div class="tier hl">
+      <div class="t-lbl">Storefront</div>
+      <div class="t-body"><b>Next.js 15</b> (App Router, TypeScript, Tailwind) &mdash; server components for catalogue pages, MDX in-repo for brew guides</div>
+    </div>
+    <div class="tier hl">
+      <div class="t-lbl">Commerce</div>
+      <div class="t-body"><b>Medusa v2</b> (Node/TS) &mdash; products, variants for grind, cart, orders, inventory, promotions, subscriptions</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Data</div>
+      <div class="t-body"><b>PostgreSQL 16</b> + <b>Redis 7</b> &mdash; both in Docker, identical locally and in production</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Payments</div>
+      <div class="t-body"><b>Cashfree</b> as primary, Razorpay as fallback &mdash; see the note below, this one is worth real money</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Shipping</div>
+      <div class="t-body"><b>Shiprocket API</b> &mdash; pincode serviceability, label generation, tracking, NDR handling</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Messaging</div>
+      <div class="t-body"><b>WhatsApp Business API</b> via Interakt or AiSensy, plus Zoho Mail on your domain and Resend for transactional email</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Edge</div>
+      <div class="t-body"><b>Cloudflare</b> &mdash; DNS, CDN, WAF, image delivery. Free tier is sufficient for a long time.</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Measurement</div>
+      <div class="t-body"><b>GA4</b>, <b>Meta Pixel + Conversions API</b> server-side, <b>Microsoft Clarity</b> for free session replay</div>
+    </div>
+    <div class="tier">
+      <div class="t-lbl">Deploy</div>
+      <div class="t-body"><b>Coolify</b> on a Hetzner or DigitalOcean VPS (~&#8377;500&ndash;1,200/month) &mdash; git-push deploys with automatic SSL</div>
+    </div>
+  </div>
+
+  <div class="call">
+    <span class="lbl">Payment gateway &mdash; not the obvious pick</span>
+    <p>Everyone defaults to Razorpay. <strong>Cashfree charges 0% on UPI as a standing rate</strong>, not a promotion, versus Razorpay's 2% platform fee &mdash; and UPI is the majority of Indian e-commerce payment volume. Cashfree is also running 0% platform fee for sign-ups after 21 July 2026, up to &#8377;20 lakh GMV/month, through 31 March 2027. On &#8377;5 lakh monthly GMV that difference is roughly <span class="rupee">&#8377;10,000/month</span>. Integrate Cashfree first; keep a Razorpay provider behind the same interface as a fallback.</p>
+  </div>
+
+  <h3>Why not Shopify</h3>
+  <p>Two concrete reasons rather than a preference. First, it can't run locally, which was your stated requirement. Second, <strong>Shopify Payments does not operate in India</strong>, so every Indian merchant pays Shopify's third-party-gateway surcharge &mdash; roughly 2% of every order, forever, on top of the gateway's own fee and the monthly plan. At 200 orders a month averaging &#8377;800, that surcharge alone is around &#8377;3,200/month for nothing.</p>
+  <div class="call warn">
+    <span class="lbl">The counterweight, and it's serious</span>
+    <p>Self-hosting means you own uptime, backups, security patches and payment-integration bugs &mdash; at 2am, during a sale. <strong>Set a rule now: if storefront work exceeds two days a week for three consecutive weeks, migrate to Shopify and eat the fee.</strong> The business is coffee. The website is a means. Engineers building their own commerce infrastructure is the single most common way technical founders quietly stall a physical-product business.</p>
+  </div>
+
+  <h3>The local &rarr; remote path</h3>
+  <div class="phases">
+    <div class="phase">
+      <div><div class="phase-n">A</div><div class="phase-roast">Laptop</div></div>
+      <div>
+        <h3>Local</h3>
+        <div class="wks">One <code>docker compose up</code></div>
+        <ul>
+          <li>Four containers: <code>postgres:16</code>, <code>redis:7</code>, Medusa on <span class="num">:9000</span>, Next.js on <span class="num">:3000</span></li>
+          <li>Seed script loads the four real SKUs with real copy &mdash; never lorem, so you're evaluating the actual store</li>
+          <li><code>cloudflared tunnel</code> to expose localhost so Cashfree and Shiprocket webhooks can reach you during development</li>
+          <li>Gateway test-mode keys throughout</li>
+        </ul>
+      </div>
+    </div>
+    <div class="phase">
+      <div><div class="phase-n">B</div><div class="phase-roast">Staging</div></div>
+      <div>
+        <h3>Staging VPS</h3>
+        <div class="wks">Same compose file, ~&#8377;500/month</div>
+        <ul>
+          <li><code>staging.buzzcaf.in</code> behind HTTP basic auth so it can't be indexed or found</li>
+          <li>Still test-mode payment keys. Place fifty fake orders and break your own checkout.</li>
+          <li>This is where you verify the compose file works on a machine that isn't yours &mdash; before it matters</li>
+        </ul>
+      </div>
+    </div>
+    <div class="phase">
+      <div><div class="phase-n">C</div><div class="phase-roast">Production</div></div>
+      <div>
+        <h3>Live</h3>
+        <div class="wks">Same compose file again</div>
+        <ul>
+          <li>Live keys, Cloudflare in front, Coolify handling SSL and git-push deploys</li>
+          <li><strong>Nightly <code>pg_dump</code> to Backblaze B2 or Cloudflare R2</strong>, and restore-test it once. An untested backup is not a backup.</li>
+          <li>Uptime monitoring (BetterStack free tier) and Sentry for errors</li>
+          <li>Staged rollout: soft-launch to your seeding list before any paid traffic</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>What ships when</h3>
+  <div class="tw">
+    <table>
+      <caption>MVP is defined strictly as "the minimum that can legally and reliably take money." Everything else waits.</caption>
+      <thead><tr><th>MVP &mdash; before first sale</th><th>v1 &mdash; weeks 8&ndash;14</th><th>v2 &mdash; month 4+</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>
+            Catalogue and product pages<br>
+            Grind selector incl. filter coffee<br>
+            Cart and guest checkout, phone-first<br>
+            Cashfree payment + webhooks<br>
+            Order confirmation by email and WhatsApp<br>
+            Shiprocket push and tracking page<br>
+            <strong>Five policy pages</strong><br>
+            Legal Metrology fields on every listing<br>
+            GA4 + Meta Pixel<br>
+            Mobile-first &mdash; most traffic is phones
+          </td>
+          <td>
+            <strong>Subscriptions</strong> &mdash; 2/4/6 weeks, skip, pause, swap<br>
+            Accounts with phone OTP login<br>
+            Reviews with photos<br>
+            Abandoned cart &rarr; WhatsApp<br>
+            Pincode serviceability + ETA on PDP<br>
+            "Find your coffee" quiz<br>
+            Coupons and referral codes<br>
+            Brew guides in MDX
+          </td>
+          <td>
+            Loyalty points<br>
+            B2B / wholesale portal, tiered pricing<br>
+            Corporate gifting and gift messages<br>
+            COD with RTO controls<br>
+            Inventory sync across channels<br>
+            Roast-batch traceability pages
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="call warn">
+    <span class="lbl">Blocks your launch if you forget it</span>
+    <p>Payment gateways will not activate your account until these are <strong>live and reachable</strong> on your domain: Terms &amp; Conditions, Privacy Policy, Refund/Cancellation Policy, Shipping &amp; Delivery Policy, About Us, and Contact Us with a real email <em>and</em> phone number, plus your registered business name displayed and HTTPS. Cashfree and Razorpay both require FSSAI documentation for food businesses. Write these in week one &mdash; founders routinely lose a week here at exactly the wrong moment.</p>
+  </div>
+
+  <h3>The overselling trap</h3>
+  <p>The same physical stock will be listed on your site, Amazon and Flipkart simultaneously with no shared inventory count. Overselling on Amazon damages your seller metrics badly and is hard to recover from. Below roughly 30 orders a day, a disciplined daily manual reconciliation is genuinely fine &mdash; just make it a fixed ritual, not a good intention. Above that, move to Easyecom or Unicommerce before it bites you.</p>
+</section>
+
+<section id="channels">
+  <div class="sec-head">
+    <div class="eyebrow">Distribution</div>
+    <h2>Channel playbook and sequence</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Channel</th><th>When</th><th>What it takes</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Amazon.in</strong><br>Grocery &amp; Gourmet</td>
+          <td><span class="pill go">Launch</span></td>
+          <td>Gated category &mdash; request approval with FSSAI licence (valid 2+ months, Retailer KOB for FBA), Form 9 if proprietorship, shelf-life declaration, fully-labelled pack images. Free GTIN exemption. Brand Registry on a pending TM. No monthly seller fee in India.</td>
+          <td>0% referral in your price band, free traffic, and up to &#8377;41,000 in new-seller credits. Best margin-to-effort ratio available right now.</td>
+        </tr>
+        <tr>
+          <td><strong>Own website</strong></td>
+          <td><span class="pill go">Launch</span></td>
+          <td>Everything in the section above.</td>
+          <td>Owns the customer, the subscription and the data. Marketplaces rent you a transaction; this is the only channel you actually control.</td>
+        </tr>
+        <tr>
+          <td><strong>Flipkart</strong></td>
+          <td><span class="pill">Week 12</span></td>
+          <td>Free registration. GSTIN, PAN, bank, FSSAI, and either a TM certificate or brand-authorisation letter with labelled pack images. F-Assured needs Flipkart or Smart Fulfilment &mdash; self-ship isn't eligible.</td>
+          <td>0% commission under &#8377;1,000 and free or reduced local-zonal shipping under 500&nbsp;g. Cheap incremental volume once your listings and photography already exist.</td>
+        </tr>
+        <tr>
+          <td><strong>JioMart</strong></td>
+          <td><span class="pill">Week 14</span></td>
+          <td>Self-serve, no registration fee, ~10&ndash;15 days.</td>
+          <td>Low barrier, low expectations. Register it and forget it &mdash; don't invest effort.</td>
+        </tr>
+        <tr>
+          <td><strong>ONDC</strong></td>
+          <td><span class="pill later">Opportunistic</span></td>
+          <td>Onboard via a Seller Network Participant (Mystore, Fynd). Network fee &#8377;1.50 per transaction over &#8377;250.</td>
+          <td>Cheap to test, ecosystem still immature and fragmented. Not a launch bet.</td>
+        </tr>
+        <tr>
+          <td><strong>BigBasket</strong></td>
+          <td><span class="pill later">Month 6+</span></td>
+          <td>Supplier registration, eligibility check, 13&ndash;21 days. Needs negotiating leverage.</td>
+          <td>Inventory-led model. Unrealistic before you have proven sell-through.</td>
+        </tr>
+        <tr>
+          <td><strong>Quick commerce</strong><br>Blinkit / Zepto / Instamart</td>
+          <td><span class="pill block">Not yet</span></td>
+          <td>No self-serve route &mdash; a category manager negotiates terms. Blinkit is 1P inventory-led since Sept 2025 with NDA trade margins.</td>
+          <td>See call #4. Revisit at month six with real sell-through data, or enter via a distributor.</td>
+        </tr>
+        <tr>
+          <td><strong>Amazon Fresh</strong></td>
+          <td><span class="pill block">N/A</span></td>
+          <td>Invite-only, built for scaled inventory-held operators.</td>
+          <td>Not pursuable. Use regular Amazon.in Grocery instead.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="demand">
+  <div class="sec-head">
+    <div class="eyebrow">Demand</div>
+    <h2>Getting people to buy twice</h2>
+  </div>
+  <p>Since order one roughly breaks even after acquisition cost, everything here is aimed at order two.</p>
+
+  <h3>Subscription is the whole strategy in one feature</h3>
+  <p>A household finishes 250&nbsp;g in two to four weeks. That is a naturally recurring purchase, and almost nobody wants to consciously re-decide every month. Offer 2/4/6-week intervals at 10&ndash;15% off with genuinely easy skip, pause and swap &mdash; friction here destroys trust and generates refund requests. Target <strong>20% of orders on subscription by month six</strong>. A subscriber's contribution over a year dwarfs any single-order optimisation you could make.</p>
+
+  <h3>WhatsApp, not email</h3>
+  <p>In India WhatsApp open rates are multiples of email's. Use it for order confirmation, dispatch and delivery, and &mdash; the valuable one &mdash; a reorder nudge timed to roughly when their bag actually runs out, calculated from pack size and stated brewing frequency rather than a generic drip schedule. Keep email for receipts and longer content.</p>
+
+  <h3>Your unfair advantage is content</h3>
+  <p>You already produce media. Most coffee brands are bad at it, and coffee is unusually well suited to it: brew-method guides, grind-size comparisons, origin stories, equipment reviews. This compounds instead of resetting each month like paid spend, it feeds SEO, and it reduces refund requests &mdash; a meaningful share of "this coffee is bad" complaints are actually brewing problems you can pre-empt. Cross-link every guide to the grind option it describes.</p>
+
+  <h3>Seeding before spending</h3>
+  <p>Ship 30&ndash;50 sampler packs to people who will actually use them and say something honest &mdash; local cafés, home-brewing communities, colleagues, small creators. Get to <strong>15+ reviews at 4.3 or better</strong> on Amazon before spending on ads. Below that threshold, traffic lands on a listing nobody trusts and converts at a rate that makes the spend pointless.</p>
+
+  <h3>Then, and only then, paid</h3>
+  <p>Meta for cold acquisition pointed at the &#8377;399 sampler rather than a &#8377;599 bag. Google Shopping and Amazon Sponsored Products capture people already searching for coffee, which is warmer and cheaper. Start at &#8377;500&ndash;1,000/day, and judge on cost per <em>repeat</em> customer, not cost per first order.</p>
+</section>
+
+<section id="watch">
+  <div class="sec-head">
+    <div class="eyebrow">Instrumentation</div>
+    <h2>Numbers to watch, and what will go wrong</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>90-day repeat rate</td><td class="n">&gt; 25%</td><td>The single number that determines whether this is a business or a hobby.</td></tr>
+        <tr><td>Subscription share of orders</td><td class="n">&gt; 20% by M6</td><td>Predictable revenue, and it makes inventory planning possible.</td></tr>
+        <tr><td>Contribution per order</td><td class="money">&gt; &#8377;180</td><td>Validates the model against real quotes rather than assumptions.</td></tr>
+        <tr><td>CAC payback</td><td class="n">&lt; 2 orders</td><td>Longer than that and growth consumes cash faster than you can fund it.</td></tr>
+        <tr><td>RTO rate</td><td class="n">&lt; 10%</td><td>Food D2C benchmark is 8&ndash;12%. Above that, look at your COD mix first.</td></tr>
+        <tr><td>Amazon rating &amp; review count</td><td class="n">4.3+, 15+</td><td>Below this, ad spend is wasted.</td></tr>
+        <tr><td>Days from roast to dispatch</td><td class="n">&lt; 3</td><td>Freshness is the product claim. If this slips, the brand promise is hollow.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Risks, ranked by how much they'd hurt</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>"Buzzcaf" is blocked in Class 30</strong></td><td>Search in week 1, before any design or printing spend. Have two backup names ready. This is the cheapest risk on the list to retire and the most expensive to discover late.</td></tr>
+        <tr><td><strong>FSSAI e-commerce tier is the stricter reading</strong></td><td>Verify with FoSCoS in week 1. If ambiguous, pay for the Central Licence &mdash; &#8377;7,500/year against the risk of being delisted mid-launch is an easy trade.</td></tr>
+        <tr><td><strong>Roaster can't hold a profile batch to batch</strong></td><td>Test with two separate batches before committing. Cup every batch on arrival. Keep retention samples. Qualify a second roaster by month four.</td></tr>
+        <tr><td><strong>Real roasting/packaging quotes break the model</strong></td><td>Get all quotes before setting MRP, not after. Both figures in the COGS table are explicitly unverified.</td></tr>
+        <tr><td><strong>Amazon's 0% referral fee reverts</strong></td><td>Model at 7% as your planning case and treat 0% as upside. Don't build a business that only works on a promotion.</td></tr>
+        <tr><td><strong>Inventory goes stale</strong></td><td>Small batches, roast close to demand, and publish roast dates &mdash; which forces the discipline publicly.</td></tr>
+        <tr><td><strong>You disappear into the codebase</strong></td><td>The two-days-a-week rule above. Set it now, while it's still hypothetical and easy to agree to.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="now">
+  <div class="sec-head">
+    <div class="eyebrow">Start here</div>
+    <h2>This week</h2>
+  </div>
+  <p>Seven things, in order. None of them costs more than &#8377;5,000 and together they retire most of the risk in this plan.</p>
+  <ul class="checks">
+    <li><strong>Search "Buzzcaf" in Class 30</strong> on the IP India public search. Free. Do it today &mdash; everything downstream depends on the answer.</li>
+    <li><strong>Register on Udyam.</strong> Free, instant, and it halves your trademark fee. Only udyamregistration.gov.in &mdash; the paid lookalike sites are not official.</li>
+    <li><strong>Ask FoSCoS support, in writing,</strong> whether a Marketer selling via Amazon and Flipkart needs a Central Licence regardless of turnover. Get it in writing so you have something to point at later.</li>
+    <li><strong>Email 5 contract roasters</strong> in Chikmagalur, Coorg and Bengaluru. Ask for per-kg toll-roasting rates, MOQ, and samples of a medium and a dark roast.</li>
+    <li><strong>Request quotes from 3 packaging suppliers</strong> for 1,000 printed 250&nbsp;g kraft stand-up pouches with a one-way degassing valve. Ask specifically about plate/setup charges and MOQ.</li>
+    <li><strong>Buy the domain</strong> and lock the matching social handles before anything is public.</li>
+    <li><strong>Scaffold the repo</strong> &mdash; <code>docker compose up</code> with Postgres, Redis, Medusa and Next.js. One evening's work, and it means the storefront is developing in the background while the licences and roasters move at their own pace.</li>
+  </ul>
+
+  <div class="foot">
+    <p><strong>On the numbers in this plan.</strong> Regulatory facts, GST rates, marketplace fee schedules, competitor pricing and gateway rates were verified against primary and reputable secondary sources in September 2026, and figures that could not be verified are marked as such throughout &mdash; particularly Indian toll-roasting rates and printed-pouch pricing, where no reliable published source exists, and Flipkart's fee structure, which is not public. Those three carry real budget consequences: get direct quotes before setting your MRP.</p>
+    <p>Two items are genuinely unresolved rather than merely uncertain: the FSSAI e-commerce licensing tier, and whether Amazon's 0% referral fee persists. Both are flagged where they appear. Marketplace fee schedules in particular change several times a year &mdash; Amazon revised its rates twice in 2026 alone &mdash; so re-check anything here before it drives a decision more than a couple of months from now.</p>
+  </div>
+</section>
+
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  var main=document.querySelector('main');
+  var list=document.getElementById('tocList');
+  if(!main||!list)return;
+  var secs=[].slice.call(main.querySelectorAll('section[id]'));
+  var links=secs.map(function(s,i){
+    var h=s.querySelector('h2');
+    var li=document.createElement('li');
+    var a=document.createElement('a');
+    a.href='#'+s.id;
+    a.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+(h?h.textContent:s.id)+'</span>';
+    li.appendChild(a);list.appendChild(li);return a;
+  });
+  if(!('IntersectionObserver' in window))return;
+  var vis={};
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){vis[e.target.id]=e.isIntersecting?e.intersectionRatio:0;});
+    var best=null,bv=0;
+    secs.forEach(function(s){if((vis[s.id]||0)>bv){bv=vis[s.id];best=s.id;}});
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+best);});
+  },{rootMargin:'-10% 0px -70% 0px',threshold:[0,.25,.5,1]});
+  secs.forEach(function(s){io.observe(s);});
+})();
+</script>

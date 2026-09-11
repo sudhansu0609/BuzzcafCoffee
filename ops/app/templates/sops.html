@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Protocols · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar"><div><h1>📘 Protocols / SOPs</h1><p class="sub">Standard operating procedures. Markdown files in <code>ops/sops/</code> — edit them there; the UI renders whatever is on disk.</p></div></div>
+<div class="tw"><table>
+<thead><tr><th>SOP</th><th>Title</th><th>Version</th><th>Last reviewed</th><th>Owner</th></tr></thead>
+<tbody>
+{% for s in sops %}<tr><td class="num">{{ s.slug }}</td><td><a href="{{ root }}/sops/{{ s.slug }}"><b>{{ s.title }}</b></a><br><span class="muted">{{ s.summary }}</span></td><td class="num">{{ s.version }}</td><td class="num">{{ s.last_reviewed }}</td><td>{{ s.owner }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

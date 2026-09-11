@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Vault · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar"><div><h1>🗄️ Vault files</h1><p class="sub">Read-only view of <code>{{ vault_dir }}</code>. Register anything important as a Document so it gets an expiry and a status.</p></div></div>
+<div class="tw"><table>
+<thead><tr><th>Path</th><th>Size</th><th></th></tr></thead>
+<tbody>
+{% for f in files %}<tr><td><a href="{{ root }}/vault/file/{{ f.path }}" target="_blank">{{ f.path }}</a>{% if f.restricted %} <span class="pill bad">restricted</span>{% endif %}</td><td class="num">{{ (f.size / 1024)|round(0)|int }} KB</td><td><a class="muted" href="{{ root }}/vault/text/{{ f.path }}">read</a> · <a class="muted" href="{{ root }}/documents/new?file_path={{ f.path }}&title={{ f.path.split('/')[-1] }}">register</a></td></tr>{% endfor %}
+</tbody></table></div>
+<p class="muted">{{ files|length }} files</p>
+{% endblock %}

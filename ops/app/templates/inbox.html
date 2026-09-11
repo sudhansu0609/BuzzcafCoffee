@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Inbox · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div><h1>📥 Inbox — the drop zone</h1>
+  <p class="sub">Drop any file into <code>{{ inbox_dir }}</code> (or upload below). The assistant reads it, works out what it is, files it in the vault, registers it, pulls the numbers out and ticks the filing off the compliance calendar.</p></div>
+  <div class="quick" style="margin:0">
+    <form method="post" action="{{ root }}/inbox/sort" style="display:inline"><button class="btn" type="submit">Sort now</button></form>
+    <form method="post" action="{{ root }}/inbox/sort" style="display:inline"><input type="hidden" name="dry_run" value="1"><button class="btn ghost" type="submit">Dry run</button></form>
+    <form method="post" action="{{ root }}/inbox/cycle" style="display:inline"><button class="btn ghost" type="submit" title="read mail, then sort">Mail + sort</button></form>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat {{ 'warn' if pending else 'ok' }}"><b>{{ pending|length }}</b><span>files waiting</span></div>
+  <div class="stat {{ 'warn' if review else 'ok' }}"><b>{{ review|length }}</b><span>need your eye</span></div>
+  <div class="stat"><b>{{ 'on' if mail_on else 'off' }}</b><span>mailbox {{ '' if mail_on else '(ops/.env)' }}</span></div>
+  <div class="stat"><b>{{ 'on' if llm_on else 'rules' }}</b><span>understanding {{ 'Claude' if llm_on else 'only' }}</span></div>
+  <div class="stat {{ '' if ocr_on else 'warn' }}"><b>{{ 'on' if ocr_on else 'off' }}</b><span>OCR for scans {{ '(' + ocr_engine + ')' if ocr_on else '(pip install rapidocr-onnxruntime pypdfium2)' }}</span></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2 style="margin-top:0">Waiting in the inbox</h2>
+    {% if pending %}<table><thead><tr><th>File</th><th>Size</th></tr></thead><tbody>
+    {% for p in pending %}<tr><td>{{ p.rel }}</td><td class="num">{{ (p.size / 1024)|round(0)|int }} KB</td></tr>{% endfor %}
+    </tbody></table>{% else %}<p class="muted">Empty. Drop files into the folder, or upload:</p>{% endif %}
+    <form method="post" action="{{ root }}/inbox/upload" enctype="multipart/form-data" class="inline-form" style="margin-top:10px">
+      <input type="file" name="files" multiple required><button class="btn sm" type="submit">Add to inbox</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Needs your eye</h2>
+    <p class="muted" style="margin-top:0">Filed under <code>12-uploads/needs-review/</code> as pending. Open, fix the type / year / folder, set status to valid.</p>
+    {% if review %}<table><tbody>{% for x in review %}<tr><td><a href="{{ root }}/documents/{{ x.id }}/edit">{{ x.title }}</a></td><td class="muted">{{ x.tags }}</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">Nothing waiting for you.</p>{% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">Last sorting run {% if last %}<span class="muted" style="font-weight:400;font-size:13px">· {{ last.at }}</span>{% endif %}</h2>
+  {% if last and last.results %}
+  <div class="tw"><table><thead><tr><th>File</th><th>Result</th><th>Kind</th><th>Conf.</th><th>Filed to</th><th>Facts</th><th>Compliance</th><th>Why</th></tr></thead><tbody>
+  {% for r in last.results %}<tr>
+    <td>{{ r.file }}</td>
+    <td><span class="pill {{ 'ok' if r.action == 'filed' else ('warn' if r.action in ('review','duplicate','skipped') else ('bad' if r.action == 'error' else '')) }}">{{ r.action }}</span></td>
+    <td>{{ r.kind or '' }}{% if r.fy %} <span class="muted">FY{{ r.fy }}</span>{% endif %}</td>
+    <td class="num">{{ '%.2f'|format(r.confidence) if r.confidence else '' }}</td>
+    <td>{% if r.doc_id %}<a href="{{ root }}/documents/{{ r.doc_id }}">{{ r.dest }}</a>{% else %}{{ r.dest or '' }}{% endif %}</td>
+    <td class="num">{{ r.facts or '' }}</td>
+    <td class="muted">{{ r.compliance or '' }}</td>
+    <td class="muted" style="font-size:12px">{{ r.note or (r.reasons|join('; ')) }}</td>
+  </tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<p class="muted">No run yet.</p>{% endif %}
+</div>
+
+{% if cycle %}
+<p class="muted">Last assistant cycle {{ cycle.at }}: {{ cycle.mail|length }} new mail{% if cycle.mail_error %} (mail error: {{ cycle.mail_error }}){% endif %}, {{ cycle.sorted|length }} files handled. Command line: <code>python ops/assistant.py run</code> · keep it running: <code>python ops/run.py --assistant</code></p>
+{% else %}
+<p class="muted">Command line: <code>python ops/assistant.py sort</code> · read mail too: <code>python ops/assistant.py run</code> · keep it running: <code>python ops/run.py --assistant</code></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,469 @@
+<title>Buzzcaf Restart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+
+<style>
+:root{
+  --ground:#F6F7F2; --surface:#FFFFFF; --surface-2:#EEF1E7;
+  --ink:#191C15; --ink-2:#4A5142; --ink-3:#7A8271;
+  --rule:#DEE3D5; --rule-strong:#C4CBB8;
+  --accent:#3F6135; --accent-2:#2E4726; --accent-soft:#E2EBD9;
+  --money:#8A5A17; --risk:#9E3B2B; --risk-soft:#F7E1DD;
+  --f-display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --step--1:0.8125rem; --step-0:1rem; --step-1:1.1875rem; --step-3:1.8125rem; --step-5:3.25rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#12150E; --surface:#1A1E15; --surface-2:#232820;
+    --ink:#E9ECE2; --ink-2:#A8B09D; --ink-3:#7C8474;
+    --rule:#2B3125; --rule-strong:#3D4535;
+    --accent:#94B980; --accent-2:#B4D2A0; --accent-soft:#22301E;
+    --money:#D9A961; --risk:#E4917F; --risk-soft:#38201B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12150E; --surface:#1A1E15; --surface-2:#232820;
+  --ink:#E9ECE2; --ink-2:#A8B09D; --ink-3:#7C8474;
+  --rule:#2B3125; --rule-strong:#3D4535;
+  --accent:#94B980; --accent-2:#B4D2A0; --accent-soft:#22301E;
+  --money:#D9A961; --risk:#E4917F; --risk-soft:#38201B;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:1180px;margin:0 auto;padding:0 24px 96px}
+.layout{display:grid;grid-template-columns:1fr}
+@media (min-width:1080px){.layout{grid-template-columns:214px minmax(0,1fr);gap:56px;align-items:start}}
+
+.masthead{border-bottom:1px solid var(--rule-strong);padding:56px 0 34px;margin-bottom:44px}
+.brandline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:22px}
+.brandline .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;align-self:center}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(2.6rem,6.5vw,var(--step-5));line-height:1.02;letter-spacing:-0.01em;margin:0 0 20px;text-wrap:balance;max-width:17ch}
+h1 em{font-style:italic;color:var(--accent)}
+.standfirst{font-size:var(--step-1);line-height:1.5;color:var(--ink-2);max-width:62ch;margin:0}
+
+.toc{display:none}
+@media (min-width:1080px){
+  .toc{display:block;position:sticky;top:28px;font-family:var(--f-mono);font-size:0.75rem;line-height:1.45}
+  .toc .toc-h{text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--rule)}
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+  .toc a{display:flex;gap:9px;padding:5px 8px;border-radius:3px;color:var(--ink-2);text-decoration:none;border-left:2px solid transparent}
+  .toc a:hover{background:var(--surface-2);color:var(--ink)}
+  .toc a.on{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft)}
+  .toc a .n{color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .toc a.on .n{color:var(--accent)}
+}
+section{padding-top:14px;margin-bottom:64px;scroll-margin-top:24px}
+.sec-head{margin-bottom:26px}
+.eyebrow{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2{font-family:var(--f-body);font-weight:600;font-size:var(--step-3);line-height:1.18;letter-spacing:-0.015em;margin:0;text-wrap:balance}
+h3{font-family:var(--f-body);font-weight:600;font-size:var(--step-1);line-height:1.3;margin:34px 0 12px;letter-spacing:-0.008em;text-wrap:balance}
+p{margin:0 0 15px;max-width:68ch}
+ul,ol{max-width:68ch;padding-left:1.15em;margin:0 0 15px}
+li{margin-bottom:7px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600;color:var(--ink)}
+code{font-family:var(--f-mono);font-size:0.86em;background:var(--surface-2);padding:1px 5px;border-radius:3px;border:1px solid var(--rule)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.rupee{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--money);font-weight:500}
+
+.call{border-left:2px solid var(--accent);background:var(--accent-soft);padding:16px 20px;margin:22px 0;border-radius:0 4px 4px 0}
+.call p:last-child{margin-bottom:0}
+.call.warn{border-left-color:var(--risk);background:var(--risk-soft)}
+.call .lbl{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-2);display:block;margin-bottom:7px}
+.call.warn .lbl{color:var(--risk)}
+
+.tw{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:0.875rem;min-width:540px}
+th{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule-strong);white-space:nowrap;background:var(--surface-2)}
+td{padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}
+tbody tr:last-child td{border-bottom:none}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.money{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--money);white-space:nowrap}
+tfoot td{border-top:1px solid var(--rule-strong);font-weight:600;background:var(--surface-2)}
+caption{caption-side:bottom;text-align:left;padding:10px 14px;font-size:0.78rem;color:var(--ink-3);border-top:1px solid var(--rule)}
+
+.pill{display:inline-block;font-family:var(--f-mono);font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;white-space:nowrap;border:1px solid var(--rule-strong);color:var(--ink-2);background:var(--surface-2)}
+.pill.block{background:var(--risk-soft);border-color:var(--risk);color:var(--risk)}
+.pill.go{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-2)}
+
+.ledger{display:flex;flex-direction:column;gap:0;margin:22px 0}
+.asset{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:14px;padding:13px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.asset:first-child{border-top:1px solid var(--rule)}
+.asset .mark{font-family:var(--f-mono);font-size:0.95rem;line-height:1.4;text-align:center}
+.asset.keep .mark{color:var(--accent)}
+.asset.broke .mark{color:var(--risk)}
+.asset .what{font-size:0.9rem;line-height:1.45}
+.asset .what b{font-weight:600;display:block;margin-bottom:2px}
+.asset .what span{color:var(--ink-2)}
+.asset .tag{font-family:var(--f-mono);font-size:0.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;padding-top:2px}
+.asset.broke .tag{color:var(--risk)}
+@media (max-width:620px){.asset{grid-template-columns:22px minmax(0,1fr);gap:10px}.asset .tag{grid-column:2;padding-top:4px}}
+
+.weeks{display:flex;flex-direction:column;gap:0;margin:24px 0}
+.wk{display:grid;grid-template-columns:88px minmax(0,1fr);gap:20px;padding:20px 0;border-top:1px solid var(--rule)}
+.wk:last-child{border-bottom:1px solid var(--rule)}
+.wk .when{font-family:var(--f-mono);font-size:0.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);line-height:1.4;padding-top:3px}
+.wk h3{margin:0 0 9px;font-size:var(--step-1)}
+.wk ul{margin:0;max-width:62ch}
+@media (max-width:620px){.wk{grid-template-columns:1fr;gap:8px}}
+
+.foot{border-top:1px solid var(--rule-strong);margin-top:20px;padding-top:22px;font-size:0.82rem;color:var(--ink-3);max-width:68ch}
+.foot p{max-width:68ch;margin-bottom:9px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="shell">
+<header class="masthead">
+  <div class="brandline">
+    <span>Buzzcaf Pvt Ltd</span><span class="dot"></span>
+    <span>Restart Plan</span><span class="dot"></span>
+    <span>Private label &middot; B2C &middot; Sept 2026</span>
+  </div>
+  <h1>Someone else makes it. Amazon <em>ships</em> it. You sell it.</h1>
+  <p class="standfirst">A dormant brand with a live entity, a working Amazon account and 29 orders of hard evidence about what didn't work. This plan outsources production, outsources fulfilment, and spends your ten hours a week on the only two things left that actually need you.</p>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Contents"><div class="toc-h">Contents</div><ol id="tocList"></ol></nav>
+  <main>
+
+<section id="have">
+  <div class="sec-head">
+    <div class="eyebrow">Opening position</div>
+    <h2>What you're starting with</h2>
+  </div>
+  <p>Four years of paperwork already exist. Three things are broken and cheap to fix. One is urgent.</p>
+  <div class="ledger">
+    <div class="asset keep"><div class="mark">&#10003;</div><div class="what"><b>Buzzcaf Private Limited</b><span>CIN U15400PN2022PTC209619 &middot; incorporated 2022 &middot; ROC filings current</span></div><div class="tag">Intact</div></div>
+    <div class="asset keep"><div class="mark">&#10003;</div><div class="what"><b>GST 27AAKCB6111C1Z3 &mdash; with FBA warehouses already registered</b><span>Three additional places of business: Bhiwandi &times;2 and Chakan. These are Amazon fulfilment centre registrations. Most new FBA sellers spend weeks getting this done. It is the single most valuable thing you own.</span></div><div class="tag">Critical</div></div>
+    <div class="asset keep"><div class="mark">&#10003;</div><div class="what"><b>Amazon Seller Central</b><span>Active, with Grocery &amp; Gourmet category approval and FBA history behind you. That category is gated &mdash; re-earning approval is not guaranteed.</span></div><div class="tag">Critical</div></div>
+    <div class="asset keep"><div class="mark">&#10003;</div><div class="what"><b>Registered trademark</b><span>Unlocks Amazon Brand Registry immediately: A+ content, Brand Store, Sponsored Brands, Brand Analytics.</span></div><div class="tag">High value</div></div>
+    <div class="asset keep"><div class="mark">&#10003;</div><div class="what"><b>Brand identity and product photography</b><span>Logo, jar labels and shots for four flavours. Genuinely decent work. Labels need reprinting for the new manufacturer details, but the design survives.</span></div><div class="tag">Reusable</div></div>
+    <div class="asset keep"><div class="mark">&#10003;</div><div class="what"><b>Instagram @buzzcaf</b><span>66 followers, bio intact, last post 17 June 2023 &mdash; the same day as your only ad spend. Dormant, not dead.</span></div><div class="tag">Revive</div></div>
+    <div class="asset broke"><div class="mark">&#33;</div><div class="what"><b>buzzcaf.in &mdash; does not resolve</b><span>Fails at DNS lookup. Your FSSAI licence lists <code>sudhansu@buzzcaf.com</code>, so check that registrar too &mdash; you may have held both.</span></div><div class="tag">Urgent</div></div>
+    <div class="asset broke"><div class="mark">&#33;</div><div class="what"><b>FSSAI 11522079000056 &mdash; expired 23 June 2024</b><span>And the Kind of Business is now wrong for what you're doing. See the compliance section &mdash; this needs modification, not just renewal.</span></div><div class="tag">Blocks selling</div></div>
+    <div class="asset broke"><div class="mark">&#33;</div><div class="what"><b>Supplier &mdash; gone</b><span>What actually ended the business. Private labelling is the direct answer to it.</span></div><div class="tag">Root cause</div></div>
+  </div>
+</section>
+
+<section id="diagnosis">
+  <div class="sec-head">
+    <div class="eyebrow">Evidence &middot; from your own files</div>
+    <h2>What the numbers say went wrong</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <caption>VibeCity order records, June&ndash;August 2023. Net is after courier and platform charges.</caption>
+      <thead><tr><th>Month</th><th>Orders</th><th>Gross</th><th>Net</th><th>Realisation</th></tr></thead>
+      <tbody>
+        <tr><td>June 2023</td><td class="n">6</td><td class="n">&mdash;</td><td class="money">&#8377;701</td><td class="n">&mdash;</td></tr>
+        <tr><td>July 2023</td><td class="n">22</td><td class="money">&#8377;4,690</td><td class="money">&#8377;2,591</td><td class="n">55.2%</td></tr>
+        <tr><td>August 2023</td><td class="n">1</td><td class="money">&#8377;220</td><td class="money">&#8377;135</td><td class="n">61.4%</td></tr>
+      </tbody>
+      <tfoot><tr><td><strong>Total</strong></td><td class="n"><strong>29</strong></td><td class="money"><strong>~&#8377;6,200</strong></td><td class="money"><strong>~&#8377;3,427</strong></td><td class="n"><strong>~55%</strong></td></tr></tfoot>
+    </table>
+  </div>
+  <p>Average order value <span class="rupee">&#8377;213</span>. Delivery averaged <span class="rupee">&#8377;52</span>, platform charges another <span class="rupee">&#8377;32</span>. That's <strong>&#8377;84 of fixed cost on a &#8377;213 order</strong> &mdash; 39% gone before the coffee. Two of 22 July orders were returns; one netted <strong>&minus;&#8377;3.22</strong>.</p>
+  <p>Total advertising spend across the life of the business: <span class="rupee">&#8377;2,700</span>, on a single day. Your last Instagram post is dated the same day.</p>
+  <div class="call">
+    <span class="lbl">Read this correctly</span>
+    <p>Nothing here says customers rejected the product &mdash; the business was never marketed enough to find out. What it does say is that <strong>self-shipping small parcels at a low order value cannot work</strong>. The plan below removes that problem structurally rather than trying to out-hustle it.</p>
+  </div>
+</section>
+
+<section id="model">
+  <div class="sec-head">
+    <div class="eyebrow">The model</div>
+    <h2>Outsource production. Outsource fulfilment.</h2>
+  </div>
+  <p>You have ten hours a week and under a lakh. That budget cannot buy inventory, acquisition <em>and</em> your own time back. So buy back the time by removing yourself from two whole functions.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Function</th><th>Before</th><th>Now</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Making the product</td><td>You repacked bulk yourself</td><td><strong>Private label</strong> &mdash; manufacturer blends, fills, seals and labels</td><td>Consistency becomes their job. This directly targets the quality failure that ended it.</td></tr>
+        <tr><td>Storing and shipping</td><td>Self-ship, &#8377;52/order</td><td><strong>Amazon FBA</strong></td><td>No packing, no couriers, no returns handling. Prime badge. The only model that survives 10 hrs/week.</td></tr>
+        <tr><td>Finding customers</td><td>&#8377;2,700 of ads, once</td><td><strong>Amazon search first</strong>, then paid</td><td>Amazon already has buyers typing "hazelnut instant coffee". You rank rather than buy them all.</td></tr>
+        <tr><td>What's left for you</td><td>Everything</td><td><strong>Supplier quality and the listing</strong></td><td>The only two things nobody else can do for you.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Why FBA is the whole answer to your 2023 problem</h3>
+  <ul>
+    <li><strong>The warehouses are already on your GST.</strong> Bhiwandi and Chakan. Done.</li>
+    <li><strong>Referral fee is currently 0%</strong> for Grocery &amp; Gourmet priced &#8377;300&ndash;1,000 &mdash; a policy Amazon introduced in March 2026. Below &#8377;1,000 you pay a closing fee and weight handling, and no commission at all.</li>
+    <li><strong>FBA closing fees are lower than self-ship</strong>, and FBA weight handling on a small parcel beats the &#8377;52 you were paying.</li>
+    <li><strong>Prime badge.</strong> This is the part people underestimate &mdash; it lifts both conversion and search placement, and you cannot get it self-shipping.</li>
+    <li><strong>Zero touch per order.</strong> Ten orders a day costs you the same time as zero.</li>
+  </ul>
+
+  <div class="call warn">
+    <span class="lbl">One pricing constraint, and it's structural</span>
+    <p>Keep every listing priced <strong>between &#8377;300 and &#8377;1,000</strong>. Below &#8377;300 the closing fee eats a small order alive; above &#8377;1,000 a 10% referral fee kicks in. That band is where a 0% commission currently lives, and it should shape your pack sizes rather than the other way round. Treat 0% as a window that may close &mdash; sanity-check that the business still works at 7%.</p>
+  </div>
+</section>
+
+<section id="supply">
+  <div class="sec-head">
+    <div class="eyebrow">Supply &middot; the root cause</div>
+    <h2>Private label: what it actually costs you</h2>
+  </div>
+  <p>Good news first: minimum order quantities in Indian instant coffee are far lower than the category's reputation suggests, and lead times are short.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Published figures from supplier listings, September 2026. Verify every one directly &mdash; listing MOQs are opening positions, not contracts.</caption>
+      <thead><tr><th>Supplier</th><th>Where</th><th>Published MOQ</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dayum Food Products</strong></td><td>Indore, MP</td><td class="n">10&ndash;25 kg</td><td>Explicit private-labelling service. Flavour catalogue covers hazelnut, caramel, chocolate <em>and</em> vanilla &mdash; all four of yours. <span class="pill go">Lowest MOQ found</span></td></tr>
+        <tr><td><strong>SLN Coffee Pvt Ltd</strong></td><td>Kushalnagar, Karnataka</td><td class="n">Ask</td><td>Est. 1977, ~500 staff. ISO 22000, FSSC 22000, HALAL, KOSHER, FSSAI. Flavours include hazelnut, vanilla, almond, cardamom, caramel. <span class="pill go">Best quality signal</span></td></tr>
+        <tr><td><strong>Portim Consumer Product</strong></td><td>Surat, Gujarat</td><td class="n">~209 jars</td><td>30+ flavours, explicit third-party labelling and customisation. Jars, pouches, sachets. Quoted 1&ndash;20 day lead times.</td></tr>
+        <tr><td><strong>The Beanster Company</strong></td><td>Bhilai / Raipur</td><td class="n">2,000 pcs</td><td>Sachets with custom branding. <strong>You already know them &mdash; they bought coffee from you in June 2023.</strong> A warm call.</td></tr>
+        <tr><td>India Flavour</td><td>New Delhi</td><td class="n">Ask</td><td>Wide flavour range, 50g&ndash;500g jars.</td></tr>
+        <tr><td>Indus Coffee Pvt Ltd</td><td>Nellore, AP</td><td class="n">Ask</td><td>Plain and flavoured, 100&ndash;250g packs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="call warn">
+    <span class="lbl">MOQ is per flavour, not per order</span>
+    <p>Every listing found prices and minimums <strong>per SKU</strong> &mdash; each flavour, format and size is its own product line. Four flavours means four minimum orders. At the low end that might be four small runs you can afford; at the sachet end, minimums of 2,000&ndash;35,000 pieces per flavour will blow the budget instantly. No supplier publishes a combined-across-flavours minimum. It can sometimes be negotiated, but never assume it.</p>
+  </div>
+
+  <h3>So launch two flavours, not four</h3>
+  <p>Take your two strongest sellers and put the full budget behind them properly, rather than spreading it across four half-funded SKUs. Add the others from revenue once the first batch sells through. A four-flavour range with none of them in stock is worse than two flavours always available &mdash; and on Amazon, going out of stock costs you search ranking that takes weeks to rebuild.</p>
+  <p>Pair them as a <strong>duo pack</strong> as well as singles. That gives you a higher-priced listing inside the &#8377;300&ndash;1,000 band without needing a third flavour, and it is a natural gift format.</p>
+
+  <div class="call">
+    <span class="lbl">A detail that may cut your cost</span>
+    <p>One supplier's finished, private-labelled jar works out cheaper per kilo than several suppliers' <em>raw bulk</em> coffee prices. That's a single data point from listing prices and may not survive contact with real quotes &mdash; but it means the assumption that private label carries a big premium over repacking yourself is worth testing rather than accepting. <strong>Ask every supplier for two quotes: finished-and-labelled, and bulk unbranded.</strong> Compare them properly before deciding.</p>
+  </div>
+</section>
+
+<section id="compliance">
+  <div class="sec-head">
+    <div class="eyebrow">Compliance &middot; this changed</div>
+    <h2>You become a Relabeller &mdash; and a deemed manufacturer</h2>
+  </div>
+  <div class="call warn">
+    <span class="lbl">Correction to earlier advice</span>
+    <p>I previously told you the category was <strong>Marketer</strong>. That is wrong: FSSAI <strong>discontinued the Marketer Kind of Business around September 2021</strong> and stopped accepting new applications under it. The correct KOB for a brand owner whose product is made by a licensed third party is <strong>Relabeller</strong>.</p>
+  </div>
+
+  <p>Your current licence says <em>Repacker &mdash; General Manufacturing</em>. That described what you used to do. It does not describe private labelling. When you go to FoSCoS you are doing three things at once, not one:</p>
+  <ol>
+    <li><strong>Renewing</strong> the licence that expired 23 June 2024</li>
+    <li><strong>Changing or adding the KOB</strong> to Relabeller</li>
+    <li><strong>Correcting the premises address</strong> &mdash; the licence says Keshavnagar Mundhwa 411036, your invoices say Hinjewadi 411057</li>
+  </ol>
+
+  <div class="call">
+    <span class="lbl">You probably need two Kinds of Business</span>
+    <p><strong>Relabeller</strong> to own the brand on product made by someone else, and <strong>Retailer</strong> because Amazon requires a Retailer KOB on the FSSAI licence for FBA eligibility. Raise both in the same application rather than discovering the second one when your FBA shipment gets blocked. Whether a single licence can carry both simultaneously was not something I could confirm from an authoritative source &mdash; ask FoSCoS directly.</p>
+  </div>
+
+  <h3>What "deemed manufacturer" means for you</h3>
+  <p>This is the part that genuinely matters and that most brand owners discover too late. As a Relabeller you are legally treated as the manufacturer of the product. <strong>Liability follows your brand name, not the factory gate.</strong> In practice:</p>
+  <ul>
+    <li>You may contract <strong>only</strong> with an FSSAI-licensed manufacturer, and you must hold a copy of their valid licence covering the correct product category</li>
+    <li>You are responsible for Schedule 4 hygiene compliance <strong>at their facility</strong> &mdash; which is why visiting or auditing is not optional theatre</li>
+    <li>You must maintain a <strong>recall and traceability plan</strong>, and be able to trace any unit back to a batch</li>
+    <li>You must still conduct <strong>product testing</strong> &mdash; outsourcing production does not outsource this</li>
+    <li>You must file the <strong>annual return</strong> each year</li>
+    <li>Both FSSAI numbers go on the label: <em>Manufactured by [maker, address, their licence no.]</em> and <em>Marketed by Buzzcaf Private Limited, [address], 11522079000056</em></li>
+  </ul>
+  <p>The upside is real, though: no premises to bring to manufacturing standard, no equipment, no packing labour, and someone else's quality systems doing the work that failed last time.</p>
+</section>
+
+<section id="timing">
+  <div class="sec-head">
+    <div class="eyebrow">Timing</div>
+    <h2>Diwali is reachable. That doesn't mean chase it.</h2>
+  </div>
+  <div class="call">
+    <span class="lbl">Correction to earlier advice</span>
+    <p>I said private label lead times run 4&ndash;8 weeks and Diwali probably wouldn't fit. Indian instant coffee suppliers are quoting <strong>roughly 1&ndash;3 weeks</strong>. The window is open.</p>
+  </div>
+  <p>Diwali falls in early November 2026. Amazon gifting traffic peaks through late October, and FBA stock must be shipped, received and receipted before that &mdash; so inventory needs to leave the manufacturer by <strong>early October</strong>. Working back through a 2&ndash;3 week production run, you'd need a supplier chosen and artwork finalised within about two weeks of today.</p>
+  <p>That's possible. It is also exactly how you get a repeat of 2023.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th></th><th>Chase Diwali</th><th>Target January <span class="pill go">Recommended</span></th></tr></thead>
+      <tbody>
+        <tr><td>Supplier selection</td><td>~2 weeks, minimal sampling</td><td>4&ndash;5 weeks, proper sampling from 3 suppliers</td></tr>
+        <tr><td>Shelf-life testing</td><td>Skipped</td><td>Four-week test completed before committing</td></tr>
+        <tr><td>Upside</td><td>Peak seasonal traffic</td><td>New-year demand, calmer competition, lower ad costs</td></tr>
+        <tr><td>Risk</td><td>Unvetted supplier, one shot, budget committed</td><td>Miss the seasonal spike</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>The middle path, and what I'd actually do:</strong> run proper supplier diligence on the January timeline, but if a supplier can turn a genuinely small first run quickly, put a modest quantity live for Diwali as a market test. You learn whether the listing converts, on real traffic, without betting the budget on an unvetted batch. Your history says rushing production is precisely what broke this business &mdash; don't repeat it for one season.</p>
+</section>
+
+<section id="ninety">
+  <div class="sec-head">
+    <div class="eyebrow">Sequence &middot; ten hours a week</div>
+    <h2>The next 90 days</h2>
+  </div>
+  <div class="weeks">
+    <div class="wk">
+      <div class="when">Week 1</div>
+      <div>
+        <h3>Unblock</h3>
+        <ul>
+          <li><strong>Check both domain registrars</strong> &mdash; <code>buzzcaf.in</code> and <code>buzzcaf.com</code>. Recover or re-register today.</li>
+          <li><strong>Log into Amazon Seller Central.</strong> Confirm account health, category approval, and what listings survived.</li>
+          <li><strong>Log into FoSCoS.</strong> Renew, change KOB to Relabeller, add Retailer, fix the address. Ask explicitly whether both KOBs can sit on one licence.</li>
+          <li><strong>Email all six suppliers.</strong> Ask for price per kg and per finished unit, MOQ per flavour, whether MOQ can be split across flavours, lead time, paid samples, FSSAI licence copy, and a spec sheet stating whether flavourings are natural or artificial.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wk">
+      <div class="when">Weeks 2&ndash;5</div>
+      <div>
+        <h3>Choose the manufacturer</h3>
+        <ul>
+          <li>Get paid samples from at least three. Taste blind, black and with milk, at the dose a customer would use.</li>
+          <li>Run the four-week test on the front-runner: some sealed, some in heat and humidity, some opened daily. Instant coffee cakes when it takes on moisture &mdash; this is the failure mode that reads to a customer as a cheap product.</li>
+          <li>Verify FSSAI licences. Ask for recent test reports. Visit the front-runner if it's reachable &mdash; you carry their liability.</li>
+          <li>Pick two flavours. Get final artwork done with both FSSAI numbers and the full Legal Metrology declarations.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wk">
+      <div class="when">Weeks 4&ndash;7</div>
+      <div>
+        <h3>Build the listings while production runs</h3>
+        <ul>
+          <li>Place the first order. Insist on a pre-production sample against your artwork before the full run.</li>
+          <li>Enrol in Brand Registry on your registered trademark.</li>
+          <li>Build the listings properly: seven images, A+ content, titles written for search. This is the highest-leverage work in the whole plan and it costs nothing but hours.</li>
+          <li>Put up the five-page website. One weekend, then leave it alone.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wk">
+      <div class="when">Weeks 7&ndash;10</div>
+      <div>
+        <h3>Go live</h3>
+        <ul>
+          <li>Inbound to FBA. Allow real time for receipting &mdash; it is slower than you expect and it is not in your control.</li>
+          <li>Restart Instagram on the existing handle. Post the process; you shoot for a living.</li>
+          <li>Use "Request a Review" on every single order. Never incentivise reviews &mdash; it risks the account you just recovered.</li>
+          <li>No ad spend yet.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wk">
+      <div class="when">Weeks 10&ndash;13</div>
+      <div>
+        <h3>Only now, advertise</h3>
+        <ul>
+          <li>Once you hold a genuine review base, start a small Sponsored Products budget on your brand and close category terms.</li>
+          <li>Watch sell-through against stock. Reorder before you run out &mdash; going out of stock costs ranking that takes weeks to recover.</li>
+          <li>Add flavours three and four from revenue, not from the original budget.</li>
+          <li>Review honestly against the criteria below.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="money">
+  <div class="sec-head">
+    <div class="eyebrow">Capital</div>
+    <h2>Where the &#8377;50k&ndash;1L goes</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <caption>Stock is the only large line. Note what's absent: no equipment, no premises upgrade, no packing labour.</caption>
+      <thead><tr><th>Item</th><th>Budget</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>FSSAI renewal + KOB modification</td><td class="money">&#8377;4,000&ndash;8,000</td><td>Plus any late penalty &mdash; two years lapsed</td></tr>
+        <tr><td>Domain recovery</td><td class="money">&#8377;1,000&ndash;3,000</td><td>Both .in and .com</td></tr>
+        <tr><td>Paid samples from 3&ndash;5 suppliers</td><td class="money">&#8377;5,000&ndash;8,000</td><td>Non-negotiable. This is the spend that prevents a repeat of 2023.</td></tr>
+        <tr><td>First production run, 2 flavours</td><td class="money">&#8377;30,000&ndash;50,000</td><td><span class="pill block">Pending quotes</span> Two MOQs, not four</td></tr>
+        <tr><td>Label artwork and printing</td><td class="money">&#8377;5,000&ndash;10,000</td><td>Often bundled by the manufacturer &mdash; ask</td></tr>
+        <tr><td>Lab test for nutrition panel</td><td class="money">&#8377;5,000&ndash;10,000</td><td>Ask if the manufacturer's report covers you; you may still want your own</td></tr>
+        <tr><td>FBA inbound shipping</td><td class="money">&#8377;2,000&ndash;4,000</td><td>Ship direct from manufacturer to the fulfilment centre where possible</td></tr>
+        <tr><td>Website, hosting, email</td><td class="money">&#8377;0&ndash;3,000</td><td>You build it</td></tr>
+        <tr><td>Photography</td><td class="money">&#8377;0</td><td>Existing shots plus your own</td></tr>
+        <tr><td>Buffer</td><td class="money">&#8377;10,000</td><td>Something will go wrong. Usually artwork or receipting.</td></tr>
+      </tbody>
+      <tfoot><tr><td><strong>Total</strong></td><td class="money"><strong>&#8377;62,000&ndash;96,000</strong></td><td>Inside budget &mdash; with no ad spend in it</td></tr></tfoot>
+    </table>
+  </div>
+  <div class="call warn">
+    <span class="lbl">The gap you have to accept</span>
+    <p>There is no meaningful advertising money in this budget, because inventory consumes it. That is the real cost of choosing B2C over B2B: you must earn your first customers from Amazon search, reviews and organic reach rather than buying them. It works &mdash; the 0% referral fee and the Prime badge are genuinely favourable right now &mdash; but it is slower, and it means <strong>the quality of your listing matters more than anything else you will do.</strong> Treat those seven images and that A+ content as the most important work of the quarter, because they are.</p>
+  </div>
+</section>
+
+<section id="verdict">
+  <div class="sec-head">
+    <div class="eyebrow">Honesty check</div>
+    <h2>What success looks like &mdash; and when to stop</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>By day 90</th><th>Commit</th><th>Stop</th></tr></thead>
+      <tbody>
+        <tr><td>Suppliers qualified with samples tested</td><td class="n">2</td><td class="n">0&ndash;1</td></tr>
+        <tr><td>Live FBA listings</td><td class="n">3+</td><td class="n">0</td></tr>
+        <tr><td>Genuine reviews</td><td class="n">15+ at 4.3+</td><td class="n">under 5</td></tr>
+        <tr><td>First batch sell-through</td><td class="n">&gt; 50%</td><td class="n">under 15%</td></tr>
+        <tr><td>Hours per week actually spent</td><td class="n">8&ndash;10</td><td class="n">under 4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="call warn">
+    <span class="lbl">The failure mode most likely to repeat</span>
+    <p>Not the market, and now not the supply either &mdash; private labelling largely removes that. <strong>Attention.</strong> This company has a live entity, a working Amazon account, warehouse registrations most sellers would envy, and it still went quiet for two and a half years because your attention went to fifteen other projects. If you cannot reliably give it eight hours a week, say so now and either close it cleanly or find someone to run it. That is a legitimate answer, and cheaper than a third restart.</p>
+  </div>
+
+  <div class="foot">
+    <p><strong>From your files:</strong> company, GST, FSSAI, SKU and order figures. Sales computed directly from the VibeCity spreadsheets in <code>receits/</code>; ad spend from <code>excel data/ads_sepending.xlsx</code>.</p>
+    <p><strong>Verified September 2026:</strong> supplier MOQs and locations from live listings; the Relabeller KOB change and deemed-manufacturer liability; GST rates; Amazon's fee structure; the domain DNS failure.</p>
+    <p><strong>Not verified, and load-bearing:</strong> every supplier MOQ is a published listing figure, not a quote to you &mdash; treat them as opening positions. Whether one licence can hold both Relabeller and Retailer KOBs is unconfirmed; ask FoSCoS. Whether the expired licence renews or needs refiling is unconfirmed. Amazon's 0% referral fee is a promotional policy that can revert &mdash; check the business still works at 7% before committing.</p>
+  </div>
+</section>
+
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  var main=document.querySelector('main');
+  var list=document.getElementById('tocList');
+  if(!main||!list)return;
+  var secs=[].slice.call(main.querySelectorAll('section[id]'));
+  var links=secs.map(function(s,i){
+    var h=s.querySelector('h2');
+    var li=document.createElement('li');
+    var a=document.createElement('a');
+    a.href='#'+s.id;
+    a.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+(h?h.textContent:s.id)+'</span>';
+    li.appendChild(a);list.appendChild(li);return a;
+  });
+  if(!('IntersectionObserver' in window))return;
+  var vis={};
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){vis[e.target.id]=e.isIntersecting?e.intersectionRatio:0;});
+    var best=null,bv=0;
+    secs.forEach(function(s){if((vis[s.id]||0)>bv){bv=vis[s.id];best=s.id;}});
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+best);});
+  },{rootMargin:'-10% 0px -70% 0px',threshold:[0,.25,.5,1]});
+  secs.forEach(function(s){io.observe(s);});
+})();
+</script>

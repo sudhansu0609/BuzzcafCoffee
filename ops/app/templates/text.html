@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Read · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar"><div><h1>📖 What the assistant read</h1><p class="sub"><code>{{ rel }}</code> · {% if ocr %}scanned, read by OCR ({{ engine }}){% elif text %}text layer{% else %}nothing readable{% if not ocr_available %} — no OCR engine installed (pip install rapidocr-onnxruntime pypdfium2){% endif %}{% endif %}</p></div>
+<a class="btn ghost" href="{{ root }}/vault/file/{{ rel }}" target="_blank">open file</a></div>
+<div class="card">{% if text %}<pre style="white-space:pre-wrap;font-family:var(--mono);font-size:12.5px;margin:0">{{ text }}</pre>{% else %}<p class="muted">No text could be read from this file.</p>{% endif %}</div>
+{% endblock %}

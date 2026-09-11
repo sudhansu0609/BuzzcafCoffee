@@ -1,0 +1,412 @@
+<title>Buzzcaf Ground Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+
+<style>
+:root{
+  --ground:#F6F7F2; --surface:#FFFFFF; --surface-2:#EEF1E7;
+  --ink:#191C15; --ink-2:#4A5142; --ink-3:#7A8271;
+  --rule:#DEE3D5; --rule-strong:#C4CBB8;
+  --accent:#3F6135; --accent-2:#2E4726; --accent-soft:#E2EBD9;
+  --money:#8A5A17; --risk:#9E3B2B; --risk-soft:#F7E1DD;
+  --f-display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --step--1:0.8125rem; --step-0:1rem; --step-1:1.1875rem; --step-3:1.8125rem; --step-5:3.25rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#12150E; --surface:#1A1E15; --surface-2:#232820;
+    --ink:#E9ECE2; --ink-2:#A8B09D; --ink-3:#7C8474;
+    --rule:#2B3125; --rule-strong:#3D4535;
+    --accent:#94B980; --accent-2:#B4D2A0; --accent-soft:#22301E;
+    --money:#D9A961; --risk:#E4917F; --risk-soft:#38201B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12150E; --surface:#1A1E15; --surface-2:#232820;
+  --ink:#E9ECE2; --ink-2:#A8B09D; --ink-3:#7C8474;
+  --rule:#2B3125; --rule-strong:#3D4535;
+  --accent:#94B980; --accent-2:#B4D2A0; --accent-soft:#22301E;
+  --money:#D9A961; --risk:#E4917F; --risk-soft:#38201B;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:var(--step-0);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:1180px;margin:0 auto;padding:0 24px 96px}
+.layout{display:grid;grid-template-columns:1fr}
+@media (min-width:1080px){.layout{grid-template-columns:214px minmax(0,1fr);gap:56px;align-items:start}}
+
+.masthead{border-bottom:1px solid var(--rule-strong);padding:56px 0 34px;margin-bottom:44px}
+.brandline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-bottom:22px}
+.brandline .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;align-self:center}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(2.6rem,6.5vw,var(--step-5));line-height:1.02;letter-spacing:-0.01em;margin:0 0 20px;text-wrap:balance;max-width:17ch}
+h1 em{font-style:italic;color:var(--accent)}
+.standfirst{font-size:var(--step-1);line-height:1.5;color:var(--ink-2);max-width:62ch;margin:0}
+
+.toc{display:none}
+@media (min-width:1080px){
+  .toc{display:block;position:sticky;top:28px;font-family:var(--f-mono);font-size:0.75rem;line-height:1.45}
+  .toc .toc-h{text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--rule)}
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+  .toc a{display:flex;gap:9px;padding:5px 8px;border-radius:3px;color:var(--ink-2);text-decoration:none;border-left:2px solid transparent}
+  .toc a:hover{background:var(--surface-2);color:var(--ink)}
+  .toc a.on{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft)}
+  .toc a .n{color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .toc a.on .n{color:var(--accent)}
+}
+section{padding-top:14px;margin-bottom:64px;scroll-margin-top:24px}
+.sec-head{margin-bottom:26px}
+.eyebrow{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+h2{font-family:var(--f-body);font-weight:600;font-size:var(--step-3);line-height:1.18;letter-spacing:-0.015em;margin:0;text-wrap:balance}
+h3{font-family:var(--f-body);font-weight:600;font-size:var(--step-1);line-height:1.3;margin:34px 0 12px;letter-spacing:-0.008em;text-wrap:balance}
+h4{font-family:var(--f-mono);font-weight:600;font-size:0.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:26px 0 10px}
+p{margin:0 0 15px;max-width:68ch}
+ul,ol{max-width:68ch;padding-left:1.15em;margin:0 0 15px}
+li{margin-bottom:7px}
+li::marker{color:var(--ink-3)}
+strong{font-weight:600;color:var(--ink)}
+code{font-family:var(--f-mono);font-size:0.86em;background:var(--surface-2);padding:1px 5px;border-radius:3px;border:1px solid var(--rule)}
+.rupee{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--money);font-weight:500}
+
+.call{border-left:2px solid var(--accent);background:var(--accent-soft);padding:16px 20px;margin:22px 0;border-radius:0 4px 4px 0}
+.call p:last-child{margin-bottom:0}
+.call.warn{border-left-color:var(--risk);background:var(--risk-soft)}
+.call .lbl{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-2);display:block;margin-bottom:7px}
+.call.warn .lbl{color:var(--risk)}
+
+.tw{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:5px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:0.875rem;min-width:540px}
+th{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule-strong);white-space:nowrap;background:var(--surface-2)}
+td{padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}
+tbody tr:last-child td{border-bottom:none}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+caption{caption-side:bottom;text-align:left;padding:10px 14px;font-size:0.78rem;color:var(--ink-3);border-top:1px solid var(--rule)}
+
+.pill{display:inline-block;font-family:var(--f-mono);font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;white-space:nowrap;border:1px solid var(--rule-strong);color:var(--ink-2);background:var(--surface-2)}
+.pill.block{background:var(--risk-soft);border-color:var(--risk);color:var(--risk)}
+.pill.go{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-2)}
+
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:0;margin:22px 0;max-width:70ch}
+.step{counter-increment:s;display:grid;grid-template-columns:30px minmax(0,1fr);gap:16px;padding:15px 0;border-top:1px solid var(--rule)}
+.step:last-child{border-bottom:1px solid var(--rule)}
+.step::before{content:counter(s,decimal-leading-zero);font-family:var(--f-mono);font-size:0.75rem;color:var(--accent);padding-top:3px;font-variant-numeric:tabular-nums}
+.step .body{font-size:0.9rem;line-height:1.5}
+.step .body b{display:block;font-weight:600;margin-bottom:3px;font-size:0.95rem}
+.step .body span{color:var(--ink-2)}
+
+.checks{list-style:none;padding:0;margin:18px 0;max-width:68ch}
+.checks li{display:grid;grid-template-columns:16px minmax(0,1fr);gap:11px;padding:9px 0;border-bottom:1px solid var(--rule);margin:0;font-size:0.9rem;line-height:1.5}
+.checks li:last-child{border-bottom:none}
+.checks li::before{content:"";width:13px;height:13px;margin-top:4px;border:1px solid var(--rule-strong);border-radius:2px;background:var(--surface)}
+
+.pages{display:flex;flex-direction:column;gap:8px;margin:22px 0;max-width:700px}
+.pg{border:1px solid var(--rule);border-radius:5px;background:var(--surface);padding:14px 16px}
+.pg.key{border-color:var(--accent);background:var(--accent-soft)}
+.pg .u{font-family:var(--f-mono);font-size:0.76rem;color:var(--accent);margin-bottom:5px}
+.pg .t{font-weight:600;font-size:0.95rem;margin-bottom:4px}
+.pg .d{font-size:0.86rem;color:var(--ink-2);line-height:1.5}
+
+.foot{border-top:1px solid var(--rule-strong);margin-top:20px;padding-top:22px;font-size:0.82rem;color:var(--ink-3);max-width:68ch}
+.foot p{max-width:68ch;margin-bottom:9px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="shell">
+<header class="masthead">
+  <div class="brandline">
+    <span>Buzzcaf Pvt Ltd</span><span class="dot"></span>
+    <span>Operating Detail</span><span class="dot"></span>
+    <span>Private label &middot; B2C</span>
+  </div>
+  <h1>Two jobs are yours. <em>Do those well.</em></h1>
+  <p class="standfirst">The manufacturer makes it and Amazon ships it, which leaves you exactly two things that decide whether this works: choosing a supplier you can trust with your legal liability, and building a listing good enough to sell without an advertising budget.</p>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Contents"><div class="toc-h">Contents</div><ol id="tocList"></ol></nav>
+  <main>
+
+<section id="choose">
+  <div class="sec-head">
+    <div class="eyebrow">Job one &middot; supply</div>
+    <h2>Choosing the manufacturer</h2>
+  </div>
+  <p>Supply failure ended this business once. The whole point of private labelling is to hand that risk to someone with real quality systems &mdash; which only works if you actually check that they have them.</p>
+
+  <h4>The enquiry email &mdash; send this to all six</h4>
+  <p>Ask everything at once. A supplier who answers all of it clearly is already telling you something useful about how they operate.</p>
+  <ul class="checks">
+    <li>Price per kg <strong>and</strong> per finished labelled unit, at 25 kg / 50 kg / 100 kg</li>
+    <li>MOQ <strong>per flavour</strong>, and whether a combined minimum can be split across two flavours</li>
+    <li>Lead time from order confirmation to dispatch</li>
+    <li>A paid sample of each flavour &mdash; say you'll pay, it gets taken seriously</li>
+    <li>Copy of their FSSAI licence, and confirmation it covers this product category</li>
+    <li>Spec sheet and COA: is the flavouring <strong>natural, nature-identical or artificial?</strong> This is the question most likely to be dodged, and it's the one your label depends on.</li>
+    <li>Do they supply the jar or pouch, or do you? Do they apply your label?</li>
+    <li>Stated shelf life, and the storage conditions it assumes</li>
+    <li>Can they repeat the identical profile in three and six months?</li>
+    <li>Do they provide a nutritional analysis you can legally print?</li>
+  </ul>
+
+  <div class="call">
+    <span class="lbl">The two-quote trick</span>
+    <p>Ask every supplier for <strong>both</strong> a finished-and-labelled price and a bulk unbranded price. One listing suggests finished private-label jars can work out cheaper per kilo than raw bulk from other suppliers &mdash; which would invert the usual assumption. It's one data point and may not survive real quotes, but you'll only find out by asking both ways.</p>
+  </div>
+
+  <h4>Judging the samples</h4>
+  <p>Taste blind, and taste the way your customer will drink it &mdash; which for Indian instant coffee means mostly <strong>with milk and sugar</strong>, not black. A flavour that reads as pleasant black can vanish entirely in milk, and a flavour that's cloying black can be right in a latte. Test both, at the dose printed on the pack.</p>
+  <p>What separates a good sample from a bad one: does the flavour taste like the thing it claims, or like a generic sweet note? Is there a chemical aftertaste? Does it dissolve cleanly in hot <em>and</em> cold water? Cold matters &mdash; a lot of Indian instant coffee is drunk as cold coffee.</p>
+
+  <h4>The four-week test, before you commit the budget</h4>
+  <p>Instant coffee is <strong>hygroscopic</strong> &mdash; it pulls moisture from the air and then clumps, cakes into a solid block, and loses aroma. A jar that was fine on arrival can be a brick two months later, and the customer reads that as a cheap product. If your 2023 quality complaints were about clumping or coffee going stale fast, this was the cause.</p>
+  <p>So before the full run: keep two sample jars sealed at room temperature, two somewhere warm and humid, and open and reclose two daily as a customer would. At four weeks check all six for caking, aroma and taste. It costs nothing and it is exactly the step that got skipped last time.</p>
+</section>
+
+<section id="liable">
+  <div class="sec-head">
+    <div class="eyebrow">Job one &middot; the part with legal weight</div>
+    <h2>You carry their liability</h2>
+  </div>
+  <div class="call warn">
+    <span class="lbl">What "deemed manufacturer" means</span>
+    <p>As a Relabeller, FSSAI treats you as the manufacturer of a product you did not make. If something goes wrong, <strong>the liability attaches to Buzzcaf, not to the factory.</strong> You are responsible for Schedule 4 hygiene compliance at <em>their</em> premises. This is why the checks below are not paperwork &mdash; they're the only thing standing between you and someone else's bad batch.</p>
+  </div>
+
+  <h4>Before you sign anything</h4>
+  <ul class="checks">
+    <li>Verify the FSSAI licence is <strong>valid, current, and covers this product category</strong>. Check the number on FoSCoS yourself rather than trusting a PDF.</li>
+    <li>Ask for recent third-party lab test reports, and any record of FSSAI inspections, notices or suspensions.</li>
+    <li>Check corporate registration and how long they've actually traded.</li>
+    <li>Ask directly how they handle a batch that fails, and listen for whether the answer sounds practised or invented.</li>
+    <li><strong>Visit the front-runner if you can reach them.</strong> Indore, Surat and Kushalnagar are all a day's travel from Pune. You are legally answerable for that facility.</li>
+  </ul>
+
+  <h4>Put in the agreement</h4>
+  <ul>
+    <li>Exclusive use of your brand name &mdash; they may not sell your recipe or artwork to anyone else</li>
+    <li>Who supplies and pays for packaging, and who owns unused stock of it</li>
+    <li>A <strong>COA with every batch</strong>, not on request</li>
+    <li>What happens to a defective batch: replacement, credit, and who pays return freight</li>
+    <li>Batch coding and traceability &mdash; you need to trace any unit back to a production lot</li>
+    <li>Delivery timelines with a stated remedy for lateness</li>
+    <li>Notice period on termination, and confidentiality</li>
+  </ul>
+
+  <h4>On every delivery, without exception</h4>
+  <div class="steps">
+    <div class="step"><div class="body"><b>Check the paperwork first</b><span>COA present, batch number legible, manufacture and best-before dates correct and consistent with the label.</span></div></div>
+    <div class="step"><div class="body"><b>Open a unit from the batch</b><span>Aroma, colour, free-flowing texture, no clumps. Brew a cup, hot and cold.</span></div></div>
+    <div class="step"><div class="body"><b>Check the label against your artwork</b><span>Both FSSAI numbers, net quantity, MRP, batch, dates. A wrong label is a recall, not a reprint.</span></div></div>
+    <div class="step"><div class="body"><b>Check fill weight and seal</b><span>Weigh a few. Confirm the induction seal is intact &mdash; a failed seal becomes a caked jar and a one-star review.</span></div></div>
+    <div class="step"><div class="body"><b>Keep two retention samples per batch</b><span>Sealed, labelled, stored past their best-before. If a customer complains later, these settle it.</span></div></div>
+    <div class="step"><div class="body"><b>Log it</b><span>Batch, date, quantity, supplier, COA reference. This is your recall trail and your annual return evidence.</span></div></div>
+  </div>
+  <p>Only after all six does stock go to Amazon. A bad batch discovered at FBA is expensive to remove and can damage account health &mdash; the account being the most valuable thing you own.</p>
+</section>
+
+<section id="label">
+  <div class="sec-head">
+    <div class="eyebrow">Job one &middot; artwork</div>
+    <h2>The label, which now names two companies</h2>
+  </div>
+  <p>Your old labels said Buzzcaf manufactured and packed the product. That is no longer true, so they need reprinting. Both parties now appear:</p>
+  <div class="call">
+    <span class="lbl">The convention</span>
+    <p><strong>Manufactured by:</strong> [manufacturer's name, full address, their FSSAI licence number]<br>
+    <strong>Marketed by:</strong> Buzzcaf Private Limited, [your licensed address], FSSAI 11522079000056</p>
+  </div>
+  <p>Everything else stays as the law requires. Check artwork against this list before it goes to press, and again on the printer's proof:</p>
+  <ul class="checks">
+    <li>Name of the food, and ingredients in descending order by weight &mdash; including the flavouring, described correctly as natural, nature-identical or artificial</li>
+    <li>Nutritional information per 100 g &mdash; <strong>from an actual lab analysis</strong>, not copied from a competitor. Ask whether the manufacturer's report covers you.</li>
+    <li>Green veg symbol: filled circle in a green-outlined square</li>
+    <li>Allergen declaration if applicable</li>
+    <li>FSSAI logo and your licence number, in a contrasting colour</li>
+    <li>Net quantity, and MRP inclusive of all taxes</li>
+    <li>Consumer care &mdash; a phone number and email that are monitored</li>
+    <li>Batch number, manufacture date, best before &mdash; DD/MM/YYYY</li>
+    <li>Storage instructions. For instant coffee, say something useful: keep tightly closed, use a dry spoon.</li>
+    <li>Minimum 3 mm font for Schedule II declarations</li>
+  </ul>
+  <div class="call warn">
+    <span class="lbl">Also required on the listing page</span>
+    <p>Since the 2023 Legal Metrology amendment, the <strong>Amazon listing itself</strong> must carry manufacturer name and address, generic name, net quantity, MRP inclusive of taxes, consumer care details and country of origin &mdash; before the physical pack reaches the buyer. Build these into the listing when you create it, not afterwards. A duo pack is a <strong>multi-piece package</strong> and needs its own declarations including piece count and total net quantity.</p>
+  </div>
+</section>
+
+<section id="listing">
+  <div class="sec-head">
+    <div class="eyebrow">Job two &middot; where the money is made</div>
+    <h2>The Amazon listing</h2>
+  </div>
+  <p>With no ad budget, the listing <em>is</em> the marketing. This is the highest-leverage work in the plan and it costs nothing but your hours. Spend them here before anywhere else.</p>
+
+  <h4>Enrol in Brand Registry first</h4>
+  <p>Your trademark is registered, so you get the full set immediately: A+ content, a Brand Store, Sponsored Brands, Brand Analytics, and IP protection. A+ content alone is worth doing properly &mdash; Amazon's own guidance attributes meaningful conversion lift to it.</p>
+
+  <h4>Seven images, each with a job</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Shot</th><th>Job</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td>Hero on pure white</td><td>Amazon requires it. Product fills the frame. This is what appears in search results, so it does more work than the other six combined.</td></tr>
+        <tr><td class="n">2</td><td>Flavour infographic</td><td>Names the flavour boldly. Most instant coffee thumbnails are unreadable at phone size &mdash; being legible is a genuine edge.</td></tr>
+        <tr><td class="n">3</td><td>The prepared cup</td><td>Show it as a cold coffee or latte, not just black. That is how it will actually be drunk.</td></tr>
+        <tr><td class="n">4</td><td>Scale reference</td><td>Jar in a hand. "50 g" means nothing to a shopper; a hand does.</td></tr>
+        <tr><td class="n">5</td><td>How to make it</td><td>Three steps, illustrated. Reduces the "tastes bad" reviews that are really brewing errors.</td></tr>
+        <tr><td class="n">6</td><td>The full label, readable</td><td>Ingredients and FSSAI number visible. Food buyers zoom in on this, and it carries the Legal Metrology declarations.</td></tr>
+        <tr><td class="n">7</td><td>Brand and trust</td><td>Registered company, FSSAI licensed, since 2022. You have a real history &mdash; most competitors on the page don't.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Title, written for search</h4>
+  <p>The title is your ranking. Lead with category and flavour, because that's what people type &mdash; "hazelnut instant coffee", not "Buzzcaf Desire". Include format, size and a qualifier. Put the brand where it belongs for a brand nobody is searching for yet: present, but not first.</p>
+
+  <h4>Reviews are the gate</h4>
+  <p>Below a solid base of genuine reviews, traffic will not convert and advertising is money set on fire. Getting there:</p>
+  <ul>
+    <li>Use <strong>"Request a Review"</strong> on every single order. It's built into Seller Central, it's compliant, and almost nobody does it consistently.</li>
+    <li><strong>Never incentivise a review</strong>, never insert a card asking for five stars, never ask friends to buy and review. It is against policy and it risks the account you just recovered &mdash; which is worth more than any launch.</li>
+    <li>Answer every question on the listing yourself, quickly. It converts browsers and it signals an attentive seller.</li>
+    <li>Respond to negative reviews plainly and fix what they identify. Early reviews tell you what's wrong while it's still cheap to change.</li>
+  </ul>
+
+  <h4>Then, and only then, advertise</h4>
+  <p>Once reviews are in place, start small on Sponsored Products: your own brand terms plus close category terms like "flavoured instant coffee" and "hazelnut coffee powder". Judge it on whether it produces profitable orders, not on impressions.</p>
+</section>
+
+<section id="fba">
+  <div class="sec-head">
+    <div class="eyebrow">Job two &middot; logistics you don't touch</div>
+    <h2>FBA mechanics</h2>
+  </div>
+  <ul>
+    <li><strong>Confirm the Retailer KOB is on your FSSAI licence</strong> before you create a shipment. Amazon requires it for FBA food eligibility, and discovering this at the warehouse door costs you weeks.</li>
+    <li><strong>Ship direct from the manufacturer to the fulfilment centre</strong> where possible. Saves a leg of freight and a handling step.</li>
+    <li><strong>Amazon enforces remaining-shelf-life rules on food.</strong> Confirm the current requirement in Seller Central before shipping &mdash; stock arriving too close to its best-before can be rejected, and you'd be paying to have it returned.</li>
+    <li><strong>Allow real time for receipting.</strong> It is slower than you expect, it's outside your control, and it's the step most likely to make you miss a seasonal window.</li>
+    <li><strong>Watch storage fees</strong> if stock moves slowly. Send a first tranche rather than everything at once.</li>
+    <li><strong>Never go out of stock.</strong> On Amazon this costs search ranking that takes weeks to rebuild &mdash; often more damaging than the lost sales. Reorder at a threshold, not when the shelf is empty.</li>
+  </ul>
+</section>
+
+<section id="web">
+  <div class="sec-head">
+    <div class="eyebrow">Supporting &middot; one weekend</div>
+    <h2>The website</h2>
+  </div>
+  <div class="call warn">
+    <span class="lbl">First, recover the domains</span>
+    <p><code>buzzcaf.in</code> fails to resolve at DNS level. Your FSSAI licence lists <strong>sudhansu@buzzcaf.com</strong>, so you may have held the .com as well. Check both registrars today. Re-register whatever has lapsed before you spend an hour on anything else here.</p>
+  </div>
+
+  <p>The site is not your sales engine &mdash; Amazon is. It's the page someone opens after seeing your jar, to decide whether you're a real company. Build it accordingly and then leave it alone.</p>
+
+  <h4>Stack</h4>
+  <ul>
+    <li><strong>Astro</strong> or plain HTML, static output, nothing to patch</li>
+    <li><strong>Cloudflare Pages</strong> &mdash; free hosting, free SSL, git-push deploys</li>
+    <li><strong>Zoho Mail</strong> free tier for a real address on your domain</li>
+    <li><strong>Cloudflare Web Analytics</strong> &mdash; free, cookie-less, no consent banner</li>
+    <li><strong>No cart at launch.</strong> Every product page sends people to Amazon, where fulfilment and trust already exist. Add a checkout only if direct demand appears &mdash; and if it does, Shopify will cost you less than building one.</li>
+  </ul>
+
+  <div class="pages">
+    <div class="pg key"><div class="u">/</div><div class="t">Home</div><div class="d">The four flavours, what the coffee is, and a clear route to Amazon. Trust strip in the footer on every page: FSSAI number, GSTIN, Pune, since 2022.</div></div>
+    <div class="pg key"><div class="u">/coffee/[flavour]</div><div class="t">One page per flavour</div><div class="d">Real description, how to make it hot and cold, ingredients, and a Buy on Amazon button. These pages are what search engines index and what a curious buyer reads.</div></div>
+    <div class="pg"><div class="u">/how-to</div><div class="t">How to make it</div><div class="d">Cold coffee, latte, mocha, dalgona. Genuinely useful, cheap to write, and it feeds Instagram content. This is how instant coffee is actually drunk in India.</div></div>
+    <div class="pg"><div class="u">/about</div><div class="t">About</div><div class="d">The company, the person, the licences. Short and human.</div></div>
+    <div class="pg"><div class="u">/contact</div><div class="t">Contact</div><div class="d">Real email, real phone, registered address, WhatsApp link. Plus a privacy policy, since a contact form collects personal data.</div></div>
+  </div>
+  <p>Mobile first &mdash; almost all of this traffic is phones. Add <code>Organization</code> and <code>Product</code> schema markup. Then stop; every further hour belongs in the listing.</p>
+</section>
+
+<section id="social">
+  <div class="sec-head">
+    <div class="eyebrow">Supporting &middot; one hour a week</div>
+    <h2>Instagram, with realistic expectations</h2>
+  </div>
+  <p>With 66 followers and no budget, Instagram is not going to drive sales. Its job is to look alive when someone checks whether you're real. Judge it on that and it becomes easy to sustain.</p>
+  <ul>
+    <li><strong>Revive @buzzcaf.</strong> Don't start a new handle &mdash; account age and history beat a clean slate.</li>
+    <li><strong>Three posts a week, shot in one batch session.</strong> Ten hours a week doesn't survive daily content.</li>
+    <li><strong>Recipes are your best content</strong> &mdash; cold coffee, dalgona, mocha, iced latte. They're useful, they're searched, they show the product in use, and they double as listing images and website content. One shoot, three uses.</li>
+    <li><strong>Show the real thing:</strong> boxes arriving, jars being checked, orders going out. Process content is the most credible thing a small food brand can post, and you shoot for a living.</li>
+    <li><strong>Set up a Google Business Profile</strong> too. Free, twenty minutes, and it makes the company findable and legitimate-looking.</li>
+  </ul>
+</section>
+
+<section id="back">
+  <div class="sec-head">
+    <div class="eyebrow">Running it</div>
+    <h2>Back office</h2>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Function</th><th>How</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GST</strong></td><td>Amazon's reports feed your returns. Instant coffee is now <strong>5%</strong>, down from 18% in the September 2025 rationalisation &mdash; a 13-point improvement on your product since you last traded. Claim input credit on manufacturer invoices and Amazon fees.</td></tr>
+        <tr><td><strong>Records</strong></td><td>One spreadsheet, four tabs: batches received, purchases, sales, reviews and complaints. Doubles as your FSSAI recall trail and annual return evidence.</td></tr>
+        <tr><td><strong>Annual return</strong></td><td>Due each year for the 1 April&ndash;31 March period. Set a recurring reminder now &mdash; missing it is an easy and avoidable penalty.</td></tr>
+        <tr><td><strong>Complaints</strong></td><td>Log every one against a batch number. Three complaints on one batch is a pattern and a supplier conversation, not bad luck.</td></tr>
+        <tr><td><strong>Direct orders</strong></td><td>If they come, UPI and a GST invoice. No gateway needed until volume justifies one.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="week1">
+  <div class="sec-head">
+    <div class="eyebrow">Start</div>
+    <h2>Week one, in order</h2>
+  </div>
+  <ul class="checks">
+    <li><strong>Check both domain registrars</strong> &mdash; <code>buzzcaf.in</code> and <code>buzzcaf.com</code>. Recover or re-register today.</li>
+    <li><strong>Log into Amazon Seller Central.</strong> Confirm account health, Grocery category approval, and what survived.</li>
+    <li><strong>Log into FoSCoS.</strong> Renew, change KOB to Relabeller, add Retailer, correct the premises address. Ask whether both KOBs sit on one licence.</li>
+    <li><strong>Email all six suppliers</strong> with the full question list. Dayum for the low MOQ, SLN for the quality signal, Portim for jar formats, and Beanster &mdash; who already know you.</li>
+    <li><strong>Decide your two launch flavours</strong> and stop thinking about the other two until the first batch sells.</li>
+    <li><strong>Set up the Google Business Profile.</strong> Twenty minutes, free.</li>
+    <li><strong>Draft the seven listing images as a shot list</strong>, so you can shoot the moment stock arrives.</li>
+  </ul>
+
+  <div class="foot">
+    <p><strong>Sourcing.</strong> Licence details, KOB and premises address are from your own FSSAI licence 11522079000056. Supplier names, locations and MOQs are from live listings verified September 2026. The Relabeller KOB change, deemed-manufacturer liability, GST rates and Legal Metrology requirements were verified against current sources the same month.</p>
+    <p><strong>Verify before relying on:</strong> every supplier MOQ is a published listing figure and an opening position, not a quote to you. Amazon's current shelf-life-remaining rule for FBA food, and whether one licence can carry both Relabeller and Retailer KOBs, could not be confirmed from authoritative sources &mdash; both are a single login or phone call away, and both can block a shipment if you get them wrong.</p>
+  </div>
+</section>
+
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  var main=document.querySelector('main');
+  var list=document.getElementById('tocList');
+  if(!main||!list)return;
+  var secs=[].slice.call(main.querySelectorAll('section[id]'));
+  var links=secs.map(function(s,i){
+    var h=s.querySelector('h2');
+    var li=document.createElement('li');
+    var a=document.createElement('a');
+    a.href='#'+s.id;
+    a.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><span>'+(h?h.textContent:s.id)+'</span>';
+    li.appendChild(a);list.appendChild(li);return a;
+  });
+  if(!('IntersectionObserver' in window))return;
+  var vis={};
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){vis[e.target.id]=e.isIntersecting?e.intersectionRatio:0;});
+    var best=null,bv=0;
+    secs.forEach(function(s){if((vis[s.id]||0)>bv){bv=vis[s.id];best=s.id;}});
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+best);});
+  },{rootMargin:'-10% 0px -70% 0px',threshold:[0,.25,.5,1]});
+  secs.forEach(function(s){io.observe(s);});
+})();
+</script>

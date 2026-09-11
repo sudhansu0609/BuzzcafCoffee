@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block title %}{{ 'New' if mode == 'new' else 'Edit' }} {{ r.singular }} · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div><h1>{{ 'New' if mode == 'new' else 'Edit' }} {{ r.singular|lower }}</h1>
+  <p class="sub"><a href="{{ root }}/{{ r.key }}">← {{ r.plural }}</a>{% if mode == 'edit' %} · <a href="{{ root }}/{{ r.key }}/{{ row.id }}">view</a>{% endif %}</p></div>
+</div>
+<form method="post" enctype="multipart/form-data" class="card">
+  <div class="form">
+  {% for f in r.fields %}
+    <div class="field {{ 'wide' if f.kind in ('textarea',) else '' }} {{ 'check' if f.kind == 'bool' else '' }}">
+      {% if f.kind == 'bool' %}{{ m.input(f, row, refs) }}<label for="f_{{ f.name }}">{{ f.label }}</label>
+      {% else %}<label for="f_{{ f.name }}">{{ f.label }}{% if f.required %} *{% endif %}</label>{{ m.input(f, row, refs) }}{% endif %}
+      {% if f.help %}<span class="help">{{ f.help }}</span>{% endif %}
+    </div>
+  {% endfor %}
+  </div>
+  <div class="actions">
+    <button class="btn" type="submit">Save</button>
+    <a class="btn ghost" href="{{ root }}/{{ r.key }}{% if mode == 'edit' %}/{{ row.id }}{% endif %}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

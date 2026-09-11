@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Brief · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div><h1>🗞️ Morning brief</h1><p class="sub">What your assistant would tell you first thing today: overdue filings, mail that needs you, what it filed overnight, what it could not work out.</p></div>
+  <div class="quick" style="margin:0">
+    <form method="post" action="{{ root }}/inbox/cycle" style="display:inline"><button class="btn ghost" type="submit">Refresh (mail + sort)</button></form>
+    {% if mail_on %}<form method="post" action="{{ root }}/brief/send" style="display:inline"><button class="btn" type="submit">E-mail it to me</button></form>{% endif %}
+  </div>
+</div>
+<div class="card"><pre style="white-space:pre-wrap;font-family:var(--sans);font-size:15px;line-height:1.6;margin:0">{{ text }}</pre></div>
+<div class="grid">
+  <div class="card"><h2 style="margin-top:0">Mail needing attention</h2>
+    {% if ctx.new_mail %}<table><tbody>{% for m in ctx.new_mail %}<tr><td><span class="pill {{ 'bad' if m.importance == 'urgent' else ('warn' if m.importance == 'high' else '') }}">{{ m.importance }}</span></td><td><b>{{ m.subject }}</b><br><span class="muted">{{ m.from }} · {{ m.category }}</span>{% if m.action %}<br>→ {{ m.action }}{% endif %}</td><td class="num">{{ m.due or '' }}</td></tr>{% endfor %}</tbody></table>
+    {% else %}<p class="muted">Nothing new. {% if not mail_on %}Mailbox not connected yet — fill <code>ops/.env</code> (see <code>ops/.env.example</code>).{% endif %}</p>{% endif %}
+    <p><a class="muted" href="{{ root }}/mail">all mail →</a></p>
+  </div>
+  <div class="card"><h2 style="margin-top:0">Filed in the last run</h2>
+    {% if ctx.filed_last_run %}<table><tbody>{% for r in ctx.filed_last_run %}<tr><td>{{ r.file }}</td><td class="muted">{{ r.kind }} → {{ r.dest }}</td></tr>{% endfor %}</tbody></table>{% else %}<p class="muted">Nothing filed in the last run.</p>{% endif %}
+    {% if ctx.needs_review %}<h3>Needs your eye</h3><ul>{% for x in ctx.needs_review %}<li><a href="{{ root }}/documents/{{ x.id }}/edit">{{ x.title }}</a></li>{% endfor %}</ul>{% endif %}
+  </div>
+</div>
+<p class="muted">{% if last_sent %}Last e-mailed {{ last_sent }}. {% endif %}Sent automatically every morning at BRIEF_HOUR when the assistant is running (<code>python ops/run.py --assistant</code>). JSON: <a href="{{ root }}/api/brief">/api/brief</a></p>
+{% endblock %}

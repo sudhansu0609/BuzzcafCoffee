@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ sop.title }} · Buzzcaf Ops{% endblock %}
+{% block content %}
+<p class="sub" style="margin:0 0 6px"><a href="{{ root }}/sops">← Protocols</a></p>
+<div class="meta"><span>{{ sop.slug }}</span><span>v{{ sop.version }}</span><span>reviewed {{ sop.last_reviewed }}</span><span>owner {{ sop.owner }}</span></div>
+<div class="card prose">{{ sop.body|md|safe }}</div>
+{% endblock %}

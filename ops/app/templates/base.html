@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Buzzcaf Ops{% endblock %}</title>
+<link rel="stylesheet" href="{{ root }}/static/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span style="font-size:22px">☕</span>
+      <div><b>Buzzcaf Ops</b><small>records · compliance · protocols</small></div>
+    </div>
+    <nav class="nav">
+      <a href="{{ root }}/" class="{{ 'on' if active == 'home' else '' }}">🏠 Dashboard</a>
+      <div class="grp">Assistant</div>
+      <a href="{{ root }}/brief" class="{{ 'on' if active == 'brief' else '' }}">🗞️ Morning brief</a>
+      <a href="{{ root }}/inbox" class="{{ 'on' if active == 'inbox' else '' }}">📥 Inbox (drop zone)</a>
+      <a href="{{ root }}/finance" class="{{ 'on' if active == 'finance' else '' }}">📊 Finance dashboard</a>
+      <div class="grp">Records</div>
+      {% for key in nav_order %}{% set r = resources[key] %}
+      <a href="{{ root }}/{{ key }}" class="{{ 'on' if active == key else '' }}">{{ r.icon }} {{ r.plural }}</a>
+      {% endfor %}
+      <div class="grp">Library</div>
+      <a href="{{ root }}/sops" class="{{ 'on' if active == 'sops' else '' }}">📘 Protocols / SOPs</a>
+      <a href="{{ root }}/vault" class="{{ 'on' if active == 'vault' else '' }}">🗄️ Vault files</a>
+      <div class="grp">Developer</div>
+      <a href="{{ root }}/api/docs">🔌 JSON API</a>
+    </nav>
+  </aside>
+  <main>
+    {% block content %}{% endblock %}
+    <footer>Buzzcaf Ops v{{ app_version }} · BUZZCAF PRIVATE LIMITED · CIN U15400PN2022PTC209619 · local only, no auth — do not expose to the internet.</footer>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% macro cell(r, f, row, refs) -%}
+  {%- set v = row.get(f.name) -%}
+  {%- if v is none or v == '' -%}<span class="muted">—</span>
+  {%- elif f.kind == 'bool' -%}{{ '✓' if v else '✗' }}
+  {%- elif f.kind == 'ref' -%}<a href="{{ root }}/{{ f.ref }}/{{ v }}">{{ refs.get(f.name, {}).get(v, v) }}</a>
+  {%- elif f.kind == 'select' and f.name in ('status','qc_result','result','severity','priority','sample_result','shelf_test_result','agreement_status','sample_result') -%}<span class="pill {{ v|replace(' ','-') }}">{{ v }}</span>
+  {%- elif f.kind == 'file' -%}<a href="{{ root }}/vault/file/{{ v }}" target="_blank">📎 {{ v.split('/')[-1] }}</a> <a class="muted" href="{{ root }}/vault/text/{{ v }}" title="what the assistant read">read</a>
+  {%- elif f.kind in ('date','int','real') -%}<span class="num">{{ v }}</span>
+  {%- elif f.kind == 'readonly' and f.name == 'next_due' -%}<span class="num {{ 'pill overdue' if v < today() else '' }}">{{ v }}</span>
+  {%- elif f.kind == 'json' -%}<code>{{ v }}</code>
+  {%- elif f.kind == 'textarea' -%}<pre>{{ v }}</pre>
+  {%- else -%}{{ v }}
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro input(f, row, refs) -%}
+  {%- set v = row.get(f.name) -%}
+  {%- if f.kind == 'textarea' -%}
+    <textarea name="{{ f.name }}" id="f_{{ f.name }}">{{ v or '' }}</textarea>
+  {%- elif f.kind == 'select' -%}
+    <select name="{{ f.name }}" id="f_{{ f.name }}">{% for o in f.options %}<option value="{{ o }}" {{ 'selected' if (v or f.default or '') == o else '' }}>{{ o or '—' }}</option>{% endfor %}</select>
+  {%- elif f.kind == 'ref' -%}
+    <select name="{{ f.name }}" id="f_{{ f.name }}"><option value="">—</option>{% for id, t in refs.get(f.name, {}).items() %}<option value="{{ id }}" {{ 'selected' if v == id else '' }}>{{ t }}</option>{% endfor %}</select>
+  {%- elif f.kind == 'bool' -%}
+    <input type="checkbox" name="{{ f.name }}" id="f_{{ f.name }}" value="1" {{ 'checked' if v else '' }}>
+  {%- elif f.kind == 'date' -%}
+    <input type="date" name="{{ f.name }}" id="f_{{ f.name }}" value="{{ v or '' }}">
+  {%- elif f.kind in ('int','real') -%}
+    <input type="number" step="{{ 'any' if f.kind == 'real' else '1' }}" name="{{ f.name }}" id="f_{{ f.name }}" value="{{ v if v is not none else (f.default if f.default is not none else '') }}">
+  {%- elif f.kind == 'file' -%}
+    <input type="text" name="{{ f.name }}" id="f_{{ f.name }}" value="{{ v or '' }}" placeholder="vault-relative path, e.g. 03-fssai/licence.pdf">
+    <div class="help">or upload into vault folder
+      <input type="text" name="{{ f.name }}__folder" value="12-uploads" style="width:160px;display:inline-block;margin:0 6px">
+      <input type="file" name="{{ f.name }}__upload" style="display:inline-block;width:auto"></div>
+  {%- elif f.kind == 'json' -%}
+    <input type="text" name="{{ f.name }}" id="f_{{ f.name }}" value="{{ v or '' }}" style="font-family:var(--mono)">
+  {%- elif f.kind == 'readonly' -%}
+    <input type="text" value="{{ v or '(computed)' }}" disabled>
+  {%- else -%}
+    <input type="text" name="{{ f.name }}" id="f_{{ f.name }}" value="{{ v or '' }}" {{ 'required' if f.required else '' }}>
+  {%- endif -%}
+{%- endmacro %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Finance · Buzzcaf Ops{% endblock %}
+{% block content %}
+<style>
+.matrix td,.matrix th{text-align:center}
+.matrix td:first-child,.matrix th:first-child{text-align:left}
+.cell{display:inline-block;min-width:34px;padding:2px 8px;border-radius:4px;font-family:var(--mono);font-size:12px}
+.cell.done{background:var(--ok-soft);color:var(--ok)} .cell.partial{background:var(--warn-soft);color:var(--warn)} .cell.missing{background:var(--panel-2);color:var(--ink-3)}
+.bars{display:grid;grid-template-columns:90px minmax(0,1fr) 120px;gap:6px 10px;align-items:center;font-size:13px}
+.bar{height:14px;border-radius:0 4px 4px 0;background:var(--accent);min-width:2px}
+.bar.neg{background:var(--bad)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.kpi .stat b{font-size:20px}
+.kpi .stat small{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+</style>
+<div class="topbar">
+  <div><h1>📊 Finance dashboard</h1><p class="sub">Built only from documents that are actually in the vault. Empty cells are things the CA has not sent yet, or the sorter could not read — not necessarily things that were never filed.</p></div>
+  <a class="btn ghost" href="{{ root }}/facts">Edit the numbers</a>
+</div>
+
+{% set fys = f.years %}
+<div class="card">
+  <h2 style="margin-top:0">Filing status by financial year</h2>
+  <div class="tw"><table class="matrix"><thead><tr><th>FY</th>{% for k, lbl in [('financial-statements','Financials'),('audit-report','Audit'),('aoc-4','AOC-4'),('mgt-7a','MGT-7A'),('dir-3-kyc','DIR-3 KYC'),('itr','ITR'),('gstr-3b','GSTR-3B'),('gstr-1','GSTR-1'),('bank-statement','Bank stmts')] %}<th>{{ lbl }}</th>{% endfor %}<th>Docs</th></tr></thead><tbody>
+  {% for row in f.matrix %}<tr>
+    <td><b>{{ row.fy }}</b>{% if row.fy == f.current_fy %} <span class="muted">(current)</span>{% endif %}</td>
+    {% for k in ['financial-statements','audit-report','aoc-4','mgt-7a','dir-3-kyc','itr','gstr-3b','gstr-1','bank-statement'] %}{% set c = row.cells[k] %}
+    <td>{% if c.ids %}<a href="{{ root }}/documents/{{ c.ids[0] }}" class="cell {{ c.state }}">{% if k in ('gstr-3b','gstr-1','bank-statement') %}{{ c.months }}/12{% else %}✓{% endif %}</a>{% else %}<span class="cell missing">—</span>{% endif %}</td>
+    {% endfor %}
+    <td class="num">{{ row.docs }}</td>
+  </tr>{% endfor %}
+  </tbody></table></div>
+  <p class="muted" style="font-size:12px">✓ = a document of that kind is filed for that year · n/12 = months covered · — = nothing in the vault. Click a cell to open the document. To fill a cell, drop the file in the inbox.</p>
+</div>
+
+{% if f.kpis %}
+{% for fy in fys|reverse %}{% set k = f.kpis.get(fy) %}{% if k %}
+<div class="card">
+  <h2 style="margin-top:0">FY{{ fy }}</h2>
+  <div class="kpi">
+  {% for m in f.kpi_metrics %}{% set v = k.get(m) %}{% if v %}
+    <div class="stat"><b class="{{ 'bad' if v.value < 0 else '' }}">₹{{ '{:,.0f}'.format(v.value) }}</b><span>{{ f.kpi_labels[m] }}</span>
+      <small>{{ v.method }} · conf {{ '%.2f'|format(v.confidence) }}{% for s in v.sources[:2] %} · <a href="{{ root }}/documents/{{ s }}">doc {{ s }}</a>{% endfor %}</small></div>
+  {% endif %}{% endfor %}
+  </div>
+</div>
+{% endif %}{% endfor %}
+{% endif %}
+
+{% if f.series %}
+<div class="card">
+  <h2 style="margin-top:0">Across the years</h2>
+  {% for metric, pts in f.series.items() %}
+  {% set vals = pts|map(attribute='value')|reject('none')|map('abs')|list %}
+  {% set mx = (vals|max) if vals else 1 %}
+  <h3>{{ f.kpi_labels.get(metric, metric) }}</h3>
+  <div class="bars">
+  {% for p in pts %}
+    <span class="num">{{ p.fy }}</span>
+    <div>{% if p.value is not none %}<div class="bar {{ 'neg' if p.value < 0 else '' }}" style="width:{{ (100 * (p.value|abs) / (mx or 1))|round(1) }}%" title="{{ p.fy }}: ₹{{ '{:,.0f}'.format(p.value) }}"></div>{% else %}<span class="muted" style="font-size:12px">no data</span>{% endif %}</div>
+    <span class="num {{ 'muted' if p.value is none else '' }}">{% if p.value is not none %}₹{{ '{:,.0f}'.format(p.value) }}{% endif %}</span>
+  {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="grid">
+  <div class="card">
+    <h2 style="margin-top:0">GST by month</h2>
+    {% if f.gst_months %}<div class="tw"><table><thead><tr><th>Month</th><th>Taxable value</th><th>Tax</th><th>ITC</th><th>Late fee</th><th></th></tr></thead><tbody>
+    {% for g in f.gst_months %}<tr><td class="num">{{ g.period }}</td><td class="num">{{ '{:,.0f}'.format(g.taxable) if g.taxable is not none else '—' }}</td><td class="num">{{ '{:,.0f}'.format(g.tax) }}</td><td class="num">{{ '{:,.0f}'.format(g.itc) if g.itc is not none else '—' }}</td><td class="num {{ 'muted' if not g.late_fee else '' }}">{{ '{:,.0f}'.format(g.late_fee) if g.late_fee else '—' }}</td><td>{% if g.source_id %}<a class="muted" href="{{ root }}/documents/{{ g.source_id }}">doc</a>{% endif %}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<p class="muted">No GSTR-3B filed copies in the vault yet. Drop them in the inbox and this table fills itself.</p>{% endif %}
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">Bank</h2>
+    {% if f.bank %}<div class="tw"><table><thead><tr><th>Period</th><th>Opening</th><th>Closing</th><th>Credits</th><th>Debits</th><th></th></tr></thead><tbody>
+    {% for b in f.bank %}<tr><td class="num">{{ b.period }}</td><td class="num">{{ '{:,.0f}'.format(b.opening) if b.opening is not none else '—' }}</td><td class="num">{{ '{:,.0f}'.format(b.closing) if b.closing is not none else '—' }}</td><td class="num">{{ '{:,.0f}'.format(b.credits) if b.credits is not none else '—' }}</td><td class="num">{{ '{:,.0f}'.format(b.debits) if b.debits is not none else '—' }}</td><td>{% if b.source_id %}<a class="muted" href="{{ root }}/documents/{{ b.source_id }}">doc</a>{% endif %}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<p class="muted">No bank statements read yet.</p>{% endif %}
+  </div>
+</div>
+
+{% if f.needs_review %}
+<div class="alert warn"><b>{{ f.needs_review|length }} document(s) need your eye</b> before their numbers can count: {% for x in f.needs_review[:6] %}<a href="{{ root }}/documents/{{ x.id }}/edit">{{ x.title }}</a>{{ ', ' if not loop.last }}{% endfor %}. See <a href="{{ root }}/inbox">Inbox</a>.</div>
+{% endif %}
+<p class="muted">{{ f.facts_total }} numbers on file · <a href="{{ root }}/api/finance">JSON</a> · every figure links to the document it came from; correct anything wrong in <a href="{{ root }}/facts">Finance data</a> (manual entries always win over extracted ones).</p>
+{% endblock %}

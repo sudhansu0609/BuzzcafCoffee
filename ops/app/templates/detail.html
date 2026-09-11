@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block title %}{{ row[r.title_field] }} · {{ r.plural }} · Buzzcaf Ops{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div><p class="sub" style="margin:0"><a href="{{ root }}/{{ r.key }}">← {{ r.plural }}</a></p><h1>{{ r.icon }} {{ row[r.title_field] }}</h1></div>
+  <div class="actions" style="margin:0">
+    <a class="btn" href="{{ root }}/{{ r.key }}/{{ row.id }}/edit">Edit</a>
+    <form method="post" action="{{ root }}/{{ r.key }}/{{ row.id }}/delete" onsubmit="return confirm('Delete this {{ r.singular|lower }}?')"><button class="btn ghost danger" type="submit">Delete</button></form>
+  </div>
+</div>
+
+{% if r.key == 'documents' and row.restricted %}<div class="alert warn"><b>Restricted:</b> personal identity document. Share only when a regulator or bank requires it.</div>{% endif %}
+{% if r.key == 'documents' and row.status == 'expired' %}<div class="alert"><b>Expired.</b> Renewal should have started {{ row.renewal_lead_days or 90 }} days before {{ row.expiry_date }}. See SOP-09.</div>{% endif %}
+
+<div class="card">
+<dl>
+{% for f in r.fields %}
+  {% if r.key == 'batches' and f.name.startswith('chk_') %}{% continue %}{% endif %}
+  <dt>{{ f.label }}</dt><dd>{{ m.cell(r, f, row, refs) }}</dd>
+{% endfor %}
+  <dt>Created / updated</dt><dd class="muted num">{{ row.created_at }} · {{ row.updated_at }}</dd>
+</dl>
+</div>
+
+{% if r.key == 'batches' %}
+<div class="card">
+  <h2 style="margin-top:0">Receiving checklist (SOP-03)</h2>
+  <ul class="checks">
+  {% for f in r.fields if f.name.startswith('chk_') %}
+    <li><span class="{{ 'tick' if row[f.name] else 'cross' }}">{{ '✓' if row[f.name] else '✗' }}</span> {{ f.label }}</li>
+  {% endfor %}
+  </ul>
+  <p class="muted">Only after all six does stock go to Amazon.</p>
+</div>
+<div class="grid">
+  <div class="card"><h2 style="margin-top:0">Retention samples</h2>
+    {% if samples %}<table><tbody>{% for s in samples %}<tr><td><a href="{{ root }}/retention_samples/{{ s.id }}">{{ s.label }}</a></td><td>{{ s.storage_location or '' }}</td><td class="num">{{ s.discard_after or '' }}</td><td><span class="pill {{ s.status|replace(' ','-') }}">{{ s.status }}</span></td></tr>{% endfor %}</tbody></table>{% else %}<p class="muted">None recorded. Two per batch are required.</p>{% endif %}
+    <p><a class="btn sm ghost" href="{{ root }}/retention_samples/new?batch_id={{ row.id }}&stored_on={{ today() }}">+ Add sample</a></p></div>
+  <div class="card"><h2 style="margin-top:0">Complaints on this batch</h2>
+    {% if complaints %}<table><tbody>{% for c in complaints %}<tr><td class="num">{{ c.date }}</td><td><a href="{{ root }}/complaints/{{ c.id }}">{{ c.summary }}</a></td><td><span class="pill {{ c.severity }}">{{ c.issue }}</span></td></tr>{% endfor %}</tbody></table>
+    {% if complaints|length >= 3 %}<div class="alert">≥3 complaints on this batch — pattern. Open a supplier conversation (SOP-05).</div>{% endif %}
+    {% else %}<p class="muted">None.</p>{% endif %}</div>
+  <div class="card"><h2 style="margin-top:0">Lab tests</h2>
+    {% if tests %}<table><tbody>{% for t in tests %}<tr><td><a href="{{ root }}/lab_tests/{{ t.id }}">{{ t.test_type }}</a></td><td>{{ t.lab or '' }}</td><td><span class="pill {{ t.result }}">{{ t.result }}</span></td></tr>{% endfor %}</tbody></table>{% else %}<p class="muted">None.</p>{% endif %}
+    <p><a class="btn sm ghost" href="{{ root }}/lab_tests/new?batch_id={{ row.id }}">+ Add test</a></p></div>
+</div>
+{% endif %}
+
+{% if r.key == 'suppliers' %}
+<div class="card"><h2 style="margin-top:0">Batches from this supplier</h2>
+  {% if batches %}<table><tbody>{% for b in batches %}<tr><td><a href="{{ root }}/batches/{{ b.id }}">{{ b.batch_no }}</a></td><td>{{ b.product }}</td><td class="num">{{ b.received_date or '' }}</td><td><span class="pill {{ b.qc_result }}">{{ b.qc_result }}</span></td></tr>{% endfor %}</tbody></table>{% else %}<p class="muted">None yet.</p>{% endif %}
+</div>
+{% endif %}
+
+{% if r.key == 'compliance' %}
+<div class="card">
+  <h2 style="margin-top:0">Mark as done</h2>
+  <form method="post" action="{{ root }}/compliance/{{ row.id }}/done" class="inline-form">
+    <input type="date" name="done_on" value="{{ today() }}" required>
+    <input type="text" name="period" placeholder="period, e.g. Aug 2026 / FY 2025-26">
+    <input type="text" name="note" placeholder="ARN / SRN / note" style="min-width:260px">
+    <button class="btn" type="submit">Done</button>
+  </form>
+  <h3>History</h3>
+  {% if log %}<table><thead><tr><th>Done on</th><th>Period</th><th>Note</th></tr></thead><tbody>{% for l in log %}<tr><td class="num">{{ l.done_on }}</td><td>{{ l.period or '' }}</td><td>{{ l.note or '' }}</td></tr>{% endfor %}</tbody></table>{% else %}<p class="muted">Never marked done.</p>{% endif %}
+</div>
+{% endif %}
+{% if r.key == 'documents' %}
+<div class="card"><h2 style="margin-top:0">Numbers extracted from this document</h2>
+  {% if facts %}<table><thead><tr><th>FY</th><th>Period</th><th>Metric</th><th>Value</th><th>Conf.</th><th>Method</th></tr></thead><tbody>{% for f in facts %}<tr><td class="num">{{ f.fy }}</td><td class="num">{{ f.period or '' }}</td><td><a href="{{ root }}/facts/{{ f.id }}">{{ f.metric }}</a></td><td class="num">{{ '{:,.0f}'.format(f.value or 0) }}</td><td class="num">{{ f.confidence }}</td><td><span class="pill">{{ f.method }}</span></td></tr>{% endfor %}</tbody></table>
+  {% else %}<p class="muted">None. Add one with <a href="{{ root }}/facts/new?source_id={{ row.id }}">+ Fact</a> if this document carries a number the dashboard should show.</p>{% endif %}
+</div>
+{% endif %}
+
+{% if r.key == 'mail' %}
+<div class="card"><h2 style="margin-top:0">Mark</h2>
+  <form method="post" action="{{ root }}/mail/{{ row.id }}/status" class="inline-form">
+    {% for s in ['read','actioned','ignored','new'] %}<button class="btn sm {{ 'ghost' if row.status == s else '' }}" name="status" value="{{ s }}" type="submit">{{ s }}</button>{% endfor %}
+    {% if row.task_id %}<a class="muted" href="{{ root }}/tasks/{{ row.task_id }}">open task</a>{% endif %}
+    {% if row.documents %}<span class="muted">filed: {% for d in row.documents.split(',') %}<a href="{{ root }}/{{ d.strip() }}">{{ d.strip() }}</a> {% endfor %}</span>{% endif %}
+  </form>
+</div>
+{% endif %}
+{% endblock %}
